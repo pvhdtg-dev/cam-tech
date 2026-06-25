@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAIYO Cable Product Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #0f0f1a;
+  --bg-secondary: #1a1a2e;
+  --bg-card: #16213e;
+  --bg-modal: #1a1a2e;
+  --text-primary: #e8e8e8;
+  --text-secondary: #a0a0b8;
+  --text-muted: #6a6a7e;
+  --gold: #d4a017;
+  --gold-light: #f0c050;
+  --gold-dark: #b8860b;
+  --accent: #d4a017;
+  --border: #2a2a40;
+  --border-light: #3a3a55;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: 0.2s ease;
+  --star-color: #f0c050;
+  --danger: #dc3545;
+  --success: #28a745;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+/* LOGIN */
+.login-overlay {
+  position: fixed; inset: 0;
+  background: linear-gradient(135deg, #0a0a15 0%, #0f0f1a 50%, #1a1a2e 100%);
+  z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+}
+.login-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 40px;
+  width: 100%; max-width: 400px;
+  text-align: center;
+  box-shadow: 0 8px 48px rgba(0,0,0,0.5);
+  animation: modalIn 0.3s ease;
+}
+.login-logo {
+  width: 60px; height: 60px;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+  border-radius: 14px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 1.8rem; color: #1a1a2e; font-weight: 800;
+  margin-bottom: 16px;
+}
+.login-title { font-size: 1.3rem; font-weight: 700; color: var(--gold-light); margin-bottom: 4px; }
+.login-subtitle { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 24px; }
+.login-input {
+  width: 100%; padding: 14px 16px;
+  background: var(--bg-primary); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text-primary);
+  font-family: inherit; font-size: 1rem; text-align: center;
+  margin-bottom: 16px; transition: var(--transition); letter-spacing: 2px;
+}
+.login-input:focus {
+  outline: none; border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(212,160,23,0.15);
+}
+.login-input::placeholder { color: var(--text-muted); letter-spacing: 0; }
+.login-btn {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  border: none; color: #1a1a2e;
+  font-family: inherit; font-weight: 700; font-size: 1rem;
+  border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition);
+}
+.login-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(212,160,23,0.3); }
+.login-error { color: var(--danger); font-size: 0.82rem; margin-top: 12px; display: none; }
+.login-error.show { display: block; animation: shake 0.4s ease; }
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%,60% { transform: translateX(-6px); }
+  40%,80% { transform: translateX(6px); }
+}
+#mainApp { display: none; }
+#mainApp.unlocked { display: block; }
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, #1a1a35 100%);
+  border-bottom: 2px solid var(--gold-dark);
+  padding: 16px 32px; position: sticky; top: 0; z-index: 100;
+}
+.header-inner {
+  max-width: 1400px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px; flex-wrap: wrap;
+}
+.logo { display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 800; color: var(--gold); white-space: nowrap; }
+.logo-icon {
+  width: 42px; height: 42px;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; color: #1a1a2e; font-weight: 800;
+}
+.search-box { position: relative; flex: 1; min-width: 280px; max-width: 500px; }
+.search-box input {
+  width: 100%; padding: 12px 16px 12px 44px;
+  background: var(--bg-primary); border: 1px solid var(--border);
+  border-radius: 50px; color: var(--text-primary);
+  font-family: inherit; font-size: 0.95rem; transition: var(--transition);
+}
+.search-box input:focus {
+  outline: none; border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(212,160,23,0.15);
+}
+.search-box input::placeholder { color: var(--text-muted); }
+.search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.1rem; }
+.header-stats { display: flex; gap: 20px; align-items: center; }
+.stat-item { text-align: center; }
+.stat-value { font-size: 1.3rem; font-weight: 700; color: var(--gold-light); }
+.stat-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
+/* LAYOUT */
+.main-layout { max-width: 1400px; margin: 0 auto; display: flex; gap: 24px; padding: 24px 32px; }
+.sidebar { width: 260px; flex-shrink: 0; position: sticky; top: 100px; align-self: flex-start; max-height: calc(100vh - 120px); overflow-y: auto; }
+.filter-section { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
+.filter-title { font-size: 0.85rem; font-weight: 700; color: var(--gold-light); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.filter-group { margin-bottom: 6px; }
+.filter-group label { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-size: 0.88rem; color: var(--text-secondary); transition: var(--transition); user-select: none; }
+.filter-group label:hover { background: rgba(212,160,23,0.08); color: var(--text-primary); }
+.filter-group input[type="checkbox"] { accent-color: var(--gold); width: 16px; height: 16px; cursor: pointer; flex-shrink: 0; }
+.filter-count { margin-left: auto; font-size: 0.75rem; color: var(--text-muted); background: var(--bg-primary); padding: 2px 8px; border-radius: 20px; }
+.btn-reset { width: 100%; padding: 10px; background: transparent; border: 1px solid var(--border-light); color: var(--text-secondary); font-family: inherit; font-size: 0.85rem; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); margin-top: 8px; font-weight: 500; }
+.btn-reset:hover { border-color: var(--gold); color: var(--gold-light); background: rgba(212,160,23,0.08); }
+.content { flex: 1; min-width: 0; }
+.content-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+.content-title { font-size: 1.1rem; font-weight: 600; }
+.content-title span { color: var(--gold-light); }
+.sort-btns { display: flex; gap: 8px; }
+.sort-btn { padding: 8px 14px; background: var(--bg-secondary); border: 1px solid var(--border); color: var(--text-secondary); font-family: inherit; font-size: 0.82rem; border-radius: 20px; cursor: pointer; transition: var(--transition); font-weight: 500; }
+.sort-btn:hover { border-color: var(--gold); color: var(--text-primary); }
+.sort-btn.active { background: rgba(212,160,23,0.15); border-color: var(--gold); color: var(--gold-light); }
+.compare-bar { display: none; background: var(--bg-secondary); border: 1px solid var(--gold-dark); border-radius: var(--radius); padding: 14px 20px; margin-bottom: 20px; align-items: center; gap: 16px; flex-wrap: wrap; }
+.compare-bar.visible { display: flex; }
+.compare-items { display: flex; gap: 10px; flex-wrap: wrap; flex: 1; }
+.compare-chip { display: flex; align-items: center; gap: 8px; background: rgba(212,160,23,0.15); border: 1px solid var(--gold-dark); padding: 6px 12px; border-radius: 20px; font-size: 0.82rem; color: var(--gold-light); font-weight: 500; }
+.compare-chip .remove { cursor: pointer; font-size: 1rem; line-height: 1; color: var(--text-muted); }
+.compare-chip .remove:hover { color: var(--danger); }
+.btn-compare { padding: 10px 20px; background: linear-gradient(135deg, var(--gold-dark), var(--gold)); border: none; color: #1a1a2e; font-family: inherit; font-weight: 700; font-size: 0.85rem; border-radius: 20px; cursor: pointer; white-space: nowrap; }
+.btn-compare:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(212,160,23,0.3); }
+.btn-compare:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+/* PRODUCT GRID */
+.product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+.product-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; cursor: pointer; transition: all 0.25s ease; position: relative; overflow: hidden; }
+.product-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold-dark), var(--gold-light)); opacity: 0; transition: opacity 0.25s ease; }
+.product-card:hover { border-color: var(--gold-dark); transform: translateY(-3px); box-shadow: 0 8px 32px rgba(212,160,23,0.1); }
+.product-card:hover::before { opacity: 1; }
+.card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+.card-model { font-size: 1rem; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+.card-type { font-size: 0.78rem; color: var(--gold-light); background: rgba(212,160,23,0.1); padding: 4px 10px; border-radius: 12px; font-weight: 500; white-space: nowrap; }
+.card-specs { display: flex; gap: 16px; margin-bottom: 14px; flex-wrap: wrap; }
+.card-spec { display: flex; flex-direction: column; gap: 2px; }
+.card-spec-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; }
+.card-spec-value { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); }
+.card-stars { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.star-item { display: flex; align-items: center; gap: 4px; font-size: 0.75rem; color: var(--text-secondary); }
+.star-item .stars { color: var(--star-color); font-size: 0.7rem; letter-spacing: 1px; }
+.card-actions { display: flex; gap: 8px; }
+.card-btn { padding: 8px 16px; border-radius: 6px; font-family: inherit; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: var(--transition); border: 1px solid var(--border-light); background: var(--bg-secondary); color: var(--text-secondary); }
+.card-btn:hover { border-color: var(--gold); color: var(--gold-light); }
+.card-btn.compare-btn { background: transparent; border-color: var(--border-light); }
+.card-btn.compare-btn.active { background: rgba(212,160,23,0.15); border-color: var(--gold); color: var(--gold-light); }
+.card-btn.detail-btn { background: linear-gradient(135deg, var(--gold-dark), var(--gold)); color: #1a1a2e; border: none; }
+.card-btn.detail-btn:hover { box-shadow: 0 2px 12px rgba(212,160,23,0.3); transform: translateY(-1px); }
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+.empty-state .icon { font-size: 3rem; margin-bottom: 16px; }
+.empty-state h3 { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 8px; }
+.empty-state p { font-size: 0.9rem; }
+/* MODAL */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+.modal-overlay.active { display: flex; }
+.modal { background: var(--bg-modal); border: 1px solid var(--border); border-radius: var(--radius); width: 100%; max-width: 900px; max-height: 85vh; overflow-y: auto; box-shadow: var(--shadow); animation: modalIn 0.2s ease; }
+@keyframes modalIn { from { opacity: 0; transform: translateY(20px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.modal-header { position: sticky; top: 0; background: var(--bg-modal); border-bottom: 1px solid var(--border); padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; z-index: 10; }
+.modal-title { font-size: 1.2rem; font-weight: 700; color: var(--gold-light); }
+.modal-close { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border-light); background: transparent; color: var(--text-secondary); font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.modal-close:hover { background: rgba(220,53,69,0.15); border-color: var(--danger); color: var(--danger); }
+.modal-tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--bg-secondary); position: sticky; top: 72px; z-index: 9; }
+.modal-tab { padding: 12px 20px; background: none; border: none; border-bottom: 2px solid transparent; color: var(--text-secondary); font-family: inherit; font-size: 0.85rem; font-weight: 500; cursor: pointer; }
+.modal-tab:hover { color: var(--text-primary); }
+.modal-tab.active { color: var(--gold-light); border-bottom-color: var(--gold); }
+.modal-body { padding: 24px; }
+.modal-tab-content { display: none; }
+.modal-tab-content.active { display: block; }
+.detail-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.detail-table th { text-align: left; padding: 10px 12px; background: var(--bg-secondary); color: var(--gold-light); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.3px; border-bottom: 2px solid var(--border); }
+.detail-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+.detail-table tr:last-child td { border-bottom: none; }
+.detail-table tr:hover td { background: rgba(212,160,23,0.03); }
+.info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+.info-item { background: var(--bg-secondary); padding: 14px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+.info-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; }
+.info-value { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); }
+.star-rating { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.star-rating .label { width: 140px; font-size: 0.85rem; color: var(--text-secondary); }
+.star-rating .bar { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+.star-rating .fill { height: 100%; background: linear-gradient(90deg, var(--gold-dark), var(--gold-light)); border-radius: 4px; }
+.star-rating .value { font-size: 0.8rem; color: var(--gold-light); font-weight: 600; min-width: 24px; text-align: right; }
+.cert-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin: 0 6px 8px 0; }
+.cert-badge.pass { background: rgba(40,167,69,0.15); color: #28a745; border: 1px solid rgba(40,167,69,0.3); }
+.cert-badge.na { background: rgba(108,117,125,0.15); color: #6c757d; border: 1px solid rgba(108,117,125,0.2); }
+.pdf-viewer { width: 100%; height: 500px; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.pdf-link { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: linear-gradient(135deg, var(--gold-dark), var(--gold)); color: #1a1a2e; text-decoration: none; border-radius: 6px; font-weight: 700; font-size: 0.85rem; margin-bottom: 12px; }
+.pdf-link:hover { box-shadow: 0 2px 12px rgba(212,160,23,0.3); }
+.compare-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.compare-table th { padding: 10px 12px; background: var(--bg-secondary); color: var(--gold-light); font-weight: 700; border-bottom: 2px solid var(--border); text-align: left; font-size: 0.78rem; text-transform: uppercase; }
+.compare-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table .param-col { font-weight: 600; color: var(--text-primary); width: 180px; white-space: nowrap; }
+@media (max-width: 768px) {
+  .main-layout { flex-direction: column; padding: 16px; }
+  .sidebar { width: 100%; position: static; max-height: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .filter-section { margin-bottom: 0; }
+  .product-grid { grid-template-columns: 1fr; }
+  .info-grid { grid-template-columns: 1fr 1fr; }
+  .modal { max-width: 100%; }
+  .header-inner { gap: 12px; }
+  .header-stats { display: none; }
+}
+</style>
+</head>
+<body>
+<!-- LOGIN OVERLAY -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-card">
+    <div class="login-logo">⚡</div>
+    <div class="login-title">TAIYO Cable Manager</div>
+    <div class="login-subtitle">Vui lòng nhập mật khẩu để truy cập</div>
+    <input type="password" class="login-input" id="loginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPassword()">
+    <button class="login-btn" onclick="checkPassword()">🔓 Đăng nhập</button>
+    <div class="login-error" id="loginError">❌ Mật khẩu không đúng. Vui lòng thử lại.</div>
+  </div>
+</div>
+<!-- MAIN APP -->
+<div id="mainApp">
+<header class="header">
+  <div class="header-inner">
+    <div class="logo"><div class="logo-icon">⚡</div><span>TAIYO Cable</span></div>
+    <div class="search-box"><span class="search-icon">🔍</span><input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm... model, loại, ứng dụng, AWG..." oninput="applyFilters()"></div>
+    <div class="header-stats"><div class="stat-item"><div class="stat-value" id="productCount">8</div><div class="stat-label">Sản phẩm</div></div></div>
+  </div>
+</header>
+<div class="main-layout">
+  <aside class="sidebar">
+    <div class="filter-section"><div class="filter-title">📂 Loại cáp</div><div id="typeFilters"></div></div>
+    <div class="filter-section"><div class="filter-title">⚡ Điện áp</div><div id="voltageFilters"></div></div>
+    <div class="filter-section"><div class="filter-title">🎯 Ứng dụng</div><div id="appFilters"></div></div>
+    <button class="btn-reset" onclick="resetFilters()">🔄 Xóa tất cả bộ lọc</button>
+  </aside>
+  <main class="content">
+    <div class="content-header">
+      <div class="content-title">Hiển thị <span id="displayCount">8</span> sản phẩm</div>
+      <div class="sort-btns">
+        <button class="sort-btn active" onclick="sortProducts('default')">Mặc định</button>
+        <button class="sort-btn" onclick="sortProducts('voltage')">Điện áp</button>
+        <button class="sort-btn" onclick="sortProducts('name')">Tên A-Z</button>
+      </div>
+    </div>
+    <div class="compare-bar" id="compareBar">
+      <span style="color:var(--gold-light);font-weight:700;font-size:0.85rem;">📊 So sánh:</span>
+      <div class="compare-items" id="compareItems"></div>
+      <button class="btn-compare" id="btnCompareNow" onclick="showComparison()" disabled>So sánh ngay</button>
+      <button style="background:transparent;border:1px solid var(--border-light);color:var(--text-secondary);padding:8px 14px;border-radius:20px;cursor:pointer;font-family:inherit;font-size:0.82rem;" onclick="clearCompare()">✕ Xóa</button>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+    <div class="empty-state" id="emptyState" style="display:none;"><div class="icon">📭</div><h3>Không tìm thấy sản phẩm</h3><p>Thử điều chỉnh bộ lọc hoặc từ khóa tìm kiếm</p></div>
+  </main>
+</div>
+<div class="modal-overlay" id="detailModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title" id="modalTitle"></div><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="modal-tabs" id="modalTabs">
+      <button class="modal-tab active" data-tab="tab-overview">Tổng quan</button>
+      <button class="modal-tab" data-tab="tab-specs">Thông số kỹ thuật</button>
+      <button class="modal-tab" data-tab="tab-ratings">Đánh giá đặc tính</button>
+      <button class="modal-tab" data-tab="tab-certs">Chứng nhận</button>
+      <button class="modal-tab" data-tab="tab-pdf">PDF</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+<div class="modal-overlay" id="compareModal" onclick="if(event.target===this)closeCompareModal()">
+  <div class="modal"><div class="modal-header"><div class="modal-title">📊 So sánh sản phẩm</div><button class="modal-close" onclick="closeCompareModal()">✕</button></div><div class="modal-body" id="compareBody"></div></div>
+</div>
+</div><!-- end mainApp -->
+
+<script>
+// ===== AUTH =====
+const AUTH_PASSWORD = "camtech@2026"; // doi mat khau o day
+const SESSION_KEY = "taiyo_auth";
+
+if (sessionStorage.getItem(SESSION_KEY) === "true") {
+  unlockApp();
+}
+
+function checkPassword() {
+  const input = document.getElementById("loginPassword");
+  const error = document.getElementById("loginError");
+  if (input.value === AUTH_PASSWORD) {
+    sessionStorage.setItem(SESSION_KEY, "true");
+    unlockApp();
+  } else {
+    error.classList.add("show");
+    input.value = "";
+    input.focus();
+    setTimeout(function() { error.classList.remove("show"); }, 2000);
+  }
+}
+
+function unlockApp() {
+  document.getElementById("loginOverlay").style.display = "none";
+  document.getElementById("mainApp").classList.add("unlocked");
+  if (!window._appInitialized) {
+    window._appInitialized = true;
+    init();
+  }
+}
+
+// ===== PRODUCT DATA =====
+const products = [
+  {id:1,model:"EXT-II/20276LF",modelDisplay:"EXT-II/20276LF",type:"Robot Cable (Multi core/pair)",typeShort:"Robot Cable",voltage:"30V",temperature:"80°C",application:"Drag chain wiring for high-speed moving",appShort:"Drag chain tốc độ cao",description:"Dây robot đặc biệt siêu mịn, vỏ ma sát thấp. Dùng cho hệ thống drag chain di chuyển tốc độ cao, 50-100 triệu chu kỳ.",standard:"UL AWM (UL 758, UL STYLE 20276); cUL AWM (CSA C22.2 No.210, CSA AWM IIA/B)",insulation:"Heat resistant PVC (Low friction)",jacket:"Low friction, oil, heat, flame resistant flexible PVC (Dark Blue)",conductorCount:"Multi core (2C-40C) / Multi pair (1P-25P)",drainWire:"Không",ratings:{heat:7,oil:6,noise:7,flame:4,torsion:5,flex:5,dragChain:"50 triệu lần"},rohs:"Có (R15)",standardLength:"100m",insulationResistance:"> 10 MΩ·km@20°C",dielectricStrength:"500 V/1min",surfaceMark:"AWM 20276 80°C VW-1 AWM IIA/B 80°C 30V FT1 LF R15",pdf:"P008-011-EXT-2-20276_LF_EN.pdf",awgVariants:[{awg:"28",structure:"19/0.08",insulDia:"0.86",totalDia:"3.1",weight:"7",current:"2.5",resistance:"< 235"},{awg:"26",structure:"30/0.08",insulDia:"0.97",totalDia:"4.3",weight:"12",current:"4.4",resistance:"< 143"},{awg:"24",structure:"48/0.08",insulDia:"1.21",totalDia:"5.7",weight:"17",current:"5.7",resistance:"< 97.9"},{awg:"22",structure:"72/0.08",insulDia:"1.36",totalDia:"7.6",weight:"19",current:"7.6",resistance:"< 62.2"},{awg:"20",structure:"119/0.08",insulDia:"1.60",totalDia:"—",weight:"—",current:"—",resistance:"< 39.1"}],certs:{UL:"✓ (STYLE 20276)",cUL:"✓ (AWM IIA/B)",CE:"✕",MTW_TC:"✕",JIS:"✕"}},
+  {id:2,model:"UE/SSX1015LF",modelDisplay:"UE/SSX1015LF",type:"Electric wire for wiring equipment (1C)",typeShort:"Wiring Equipment",voltage:"600V",temperature:"105°C",application:"Wiring in narrow place, medium/low-speed operational components",appShort:"Wiring thiết bị hẹp",description:"Dây siêu mịn đặc biệt, cách điện PVC siêu mềm chịu nhiệt. Dùng cho wiring trong thiết bị, không gian hẹp, 10 triệu chu kỳ drag chain.",standard:"UL AWM (UL 758, UL STYLE 1015); cUL AWM (CSA C22.2 No.210); CE/TÜV (EN50525-2-31)",insulation:"Super flexible heat resistant PVC",jacket:"Không có (single insulation)",conductorCount:"1C",drainWire:"Không",ratings:{heat:5,oil:3,noise:1,flame:4,torsion:4,flex:5,dragChain:"10 triệu lần"},rohs:"Có (R15)",standardLength:"100m",insulationResistance:"> 50 MΩ·km@20°C",dielectricStrength:"2000 V/1min",surfaceMark:"AWM 1015 105°C 600V VW-1 AWM IA/B 105°C 600V FT1 CE 07V-K 450/750V LF R15",pdf:"P092-093-UE_SSX1015-LF_EN.pdf",awgVariants:[{awg:"14",structure:"7/60/0.08",insulDia:"3.8",totalDia:"3.8",weight:"20",current:"35",resistance:"< 8.62"},{awg:"12",structure:"7/63/0.10",insulDia:"4.4",totalDia:"4.4",weight:"31",current:"48",resistance:"< 5.43"},{awg:"10",structure:"7/99/0.10",insulDia:"5.0",totalDia:"5.0",weight:"44",current:"66",resistance:"< 3.30"}],certs:{UL:"✓ (STYLE 1015)",cUL:"✓ (AWM IA/B)",CE:"✓ (TÜV J2050493)",MTW_TC:"✕",JIS:"✕"}},
+  {id:3,model:"300V EXT-II/2517LF",modelDisplay:"300V EXT-II/2517LF",type:"Electronic equipment robot cable (Multi core)",typeShort:"Robot Cable",voltage:"300V",temperature:"105°C",application:"Drag chain wiring for high-speed moving",appShort:"Drag chain tốc độ cao",description:"Dây robot 300V, vỏ ma sát thấp, 50-100 triệu chu kỳ drag chain, chịu dầu tốt. Điện áp cao hơn dòng 20276LF.",standard:"UL AWM (UL 758, UL STYLE 2517); cUL AWM (CSA C22.2 No.210, CSA AWM IIA/B)",insulation:"Heat resistant PVC (Low friction)",jacket:"Low friction, oil, heat, flame resistant flexible PVC",conductorCount:"Multi core (2C-30C)",drainWire:"Không",ratings:{heat:5,oil:5,noise:2,flame:4,torsion:5,flex:5,dragChain:"50 triệu lần"},rohs:"Có (R15)",standardLength:"100m",insulationResistance:"> 10 MΩ·km@20°C",dielectricStrength:"2000 V/1min",surfaceMark:"AWM 2517 105°C VW-1 AWM IIA/B 105°C 300V FT1 LF R15",pdf:"P016-017_300V_EXT-2_2517_LF_EN.pdf",awgVariants:[{awg:"20",structure:"119/0.08",insulDia:"2.0",totalDia:"6.1",weight:"30",current:"6.4",resistance:"< 39.1"},{awg:"18",structure:"168/0.08",insulDia:"2.21",totalDia:"6.5",weight:"37",current:"8.3",resistance:"< 24.0"},{awg:"16",structure:"266/0.08",insulDia:"2.54",totalDia:"7.4",weight:"47",current:"10.5",resistance:"< 15.5"},{awg:"14",structure:"420/0.08",insulDia:"2.97",totalDia:"9.6",weight:"64",current:"12",resistance:"< 9.75"}],certs:{UL:"✓ (STYLE 2517)",cUL:"✓ (AWM IIA/B)",CE:"✕",MTW_TC:"✕",JIS:"✕"}},
+  {id:4,model:"HK/20276XL LF",modelDisplay:"HK/20276XL LF",type:"Electronic equipment cable (RS485/RS422)",typeShort:"RS485/RS422 Cable",voltage:"30V",temperature:"80°C",application:"Cable for RS485, RS422 communication",appShort:"RS485/RS422",description:"Cách điện XLPE, filler không bụi (non-migratory). Dùng cho truyền thông RS485/RS422. Chống dầu tốt.",standard:"UL AWM (UL 758, UL STYLE 20276); cUL (CSA C22.2 No.210, CSA AWM IIA)",insulation:"Cross-linked polyethylene (XLPE)",jacket:"Oil, heat resistant flexible PVC",conductorCount:"3C / Multi pair (1P-25P)",drainWire:"Không",ratings:{heat:3,oil:5,noise:2,flame:4,torsion:0,flex:3,dragChain:"—"},rohs:"Có (R15)",standardLength:"100m",insulationResistance:"> 1000 MΩ·km@20°C",dielectricStrength:"500 V/1min",surfaceMark:"AWM 20276 80°C 30V VW-1 AWM IIA 80°C 30V FT1 LF R15",pdf:"HK_20276XL_LF_EN.pdf",awgVariants:[{awg:"26",structure:"7/0.16",insulDia:"0.88",totalDia:"4.0",weight:"11",current:"11",resistance:"< 154"},{awg:"24",structure:"7/0.203",insulDia:"1.11",totalDia:"4.3",weight:"15",current:"15",resistance:"< 98.3"},{awg:"22",structure:"7/0.26",insulDia:"1.38",totalDia:"4.9",weight:"20",current:"20",resistance:"< 63.2"}],certs:{UL:"✓ (STYLE 20276)",cUL:"✓ (AWM IIA)",CE:"✕",MTW_TC:"✕",JIS:"✕"}},
+  {id:5,model:"UE/2501E-SB(N)/TC[Y/G]LF",modelDisplay:"UE/2501E-SB(N)/TC[Y/G]LF",type:"Tray cable, raceway and electronic equipment cable (Shielded)",typeShort:"Tray/Raceway Shielded",voltage:"600V",temperature:"105°C",application:"Cable tray, raceway wiring, multi-cable for North America and EU",appShort:"Tray/Raceway Bắc Mỹ & EU",description:"Có shield (lõi đồng thiếp), dùng cho tray/raceway, đạt NFPA70, có dây nối đất Y/G. Đa chứng nhận: UL/MTW/TC/CE/JIS.",standard:"UL AWM (UL 758, UL STYLE 2501); UL MTW; UL TC; cUL AWM (CSA C22.2 No.210); CE (EN50525-2-51); JIS",insulation:"Heat resistant PVC",jacket:"Oil, heat resistant flexible PVC (Black)",conductorCount:"Multi core (3C-30C+1C [Y/G])",drainWire:"Có (Tinned annealed copper braid shield)",ratings:{heat:5,oil:5,noise:3,flame:5,torsion:0,flex:3,dragChain:"—"},rohs:"Có (R15)",standardLength:"100m",insulationResistance:"> 60 (18-16AWG), > 50 (14-10AWG) MΩ·km@20°C",dielectricStrength:"2000 V/1min",surfaceMark:"TC-ER 600V 90°C DRY 75°C WET MTW 600V FLEXING VW-1 AWM 2501 VW-1 AWM IIA/B 105°C 600V FT1 CE 05VV5-F 300/500V LF R15",pdf:"UE_2501E-SBN_TC_YG_LF-EN-1.pdf",awgVariants:[{awg:"18",structure:"35/0.18",insulDia:"2.9",totalDia:"10.5",weight:"87",current:"20",resistance:"< 22.8"},{awg:"16",structure:"26/0.26",insulDia:"3.2",totalDia:"11.3",weight:"118",current:"26",resistance:"< 14.3"},{awg:"14",structure:"41/0.26",insulDia:"3.6",totalDia:"12.1",weight:"141",current:"34",resistance:"< 9.01"},{awg:"12",structure:"65/0.254",insulDia:"4.1",totalDia:"13.1",weight:"178",current:"46",resistance:"< 5.45"},{awg:"10",structure:"104/0.254",insulDia:"4.8",totalDia:"14.7",weight:"242",current:"61",resistance:"< 3.44"}],certs:{UL:"✓ (STYLE 2501)",cUL:"✓ (AWM IIA/B)",CE:"✓ (EN50525-2-51)",MTW_TC:"✓ (MTW, TC, TC-ER)",JIS:"✓"}},
+  {id:6,model:"UE/SSX83LF & UE/SSX84LF",modelDisplay:"UE/SSX83LF & UE/SSX84LF",type:"Electric wire for wiring in equipment and power supply (1C, large size)",typeShort:"Power Supply (Large)",voltage:"600V",temperature:"105°C",application:"Wiring in narrow place, medium/low-speed operational components, power supply",appShort:"Power supply cỡ lớn",description:"Dây điện cỡ lớn (8AWG đến 4/0AWG). SSX83: 8-2AWG. SSX84: 1-4/0AWG. Dùng cho power supply và wiring trong thiết bị, dây mềm chịu nhiệt.",standard:"UL AWM (UL 758, UL STYLE 1283/1284); cUL AWM (CSA C22.2 No.210); CE/TÜV (EN50525-2-31); JIS",insulation:"Heat resistant flexible PVC",jacket:"Không có (single insulation)",conductorCount:"1C",drainWire:"Không",ratings:{heat:5,oil:3,noise:1,flame:4,torsion:4,flex:5,dragChain:"10 triệu lần"},rohs:"Có (R15)",standardLength:"100m (50m cho một số size)",insulationResistance:"> 50 (8-2AWG), > 40 (1-4/0AWG) MΩ·km@20°C",dielectricStrength:"2000V (8-2AWG), 2500V (1-4/0AWG)",surfaceMark:"AWM 1283/1284 105°C 600V VW-1 AWM IA/B 105°C 600V FT1 CE 07V-K 450/750V LF R15",pdf:"P094-095-UE_SSX83-LF-UE_SSX84-LF_EN.pdf",awgVariants:[{awg:"8 (SSX83)",structure:"7/50/0.18",insulDia:"7.7",totalDia:"7.7",weight:"87",current:"93/74",resistance:"< 2.18"},{awg:"6 (SSX83)",structure:"7/84/0.18",insulDia:"9.1",totalDia:"9.1",weight:"134",current:"130/100",resistance:"< 1.32"},{awg:"4 (SSX83)",structure:"7/126/0.18",insulDia:"10.3",totalDia:"10.3",weight:"188",current:"160/130",resistance:"< 0.882"},{awg:"2 (SSX83)",structure:"7/200/0.18",insulDia:"12.3",totalDia:"12.3",weight:"286",current:"220/180",resistance:"< 0.554"},{awg:"1 (SSX84)",structure:"7/252/0.18",insulDia:"14.3",totalDia:"14.3",weight:"373",current:"260/210",resistance:"< 0.441"},{awg:"1/0 (SSX84)",structure:"12/186/0.18",insulDia:"15.8",totalDia:"15.8",weight:"464",current:"310/240",resistance:"< 0.349"},{awg:"2/0 (SSX84)",structure:"12/240/0.18",insulDia:"17.3",totalDia:"17.3",weight:"581",current:"360/290",resistance:"< 0.270"},{awg:"3/0 (SSX84)",structure:"12/300/0.18",insulDia:"18.8",totalDia:"18.8",weight:"712",current:"430/340",resistance:"< 0.206"},{awg:"4/0 (SSX84)",structure:"19/240/0.18",insulDia:"20.4",totalDia:"20.4",weight:"880",current:"500/400",resistance:"< 0.161"}],certs:{UL:"✓ (STYLE 1283/1284)",cUL:"✓ (AWM IA/B)",CE:"✓ (TÜV J9950730)",MTW_TC:"✕",JIS:"✓"}},
+  {id:7,model:"FAMV-5E26SB(BK)",modelDisplay:"FAMV-5E26SB(BK)",type:"CAT5e Ethernet high flexible cable",typeShort:"CAT5e Ethernet",voltage:"30V",temperature:"80°C",application:"Cable bare wiring for high-speed moving",appShort:"Ethernet tốc độ cao",description:"Cáp Ethernet CAT5e mềm dẻo cao. 4 cặp, AWG 26, cách điện XLPE, vỏ PVC chịu dầu chịu nhiệt. Độ dài tiêu chuẩn 200m.",standard:"UL AWM (UL 758, UL STYLE 20276)",insulation:"Cross-Linked polyethylene (XLPE)",jacket:"Oil, heat-resistant flexible PVC (Black)",conductorCount:"4P (4 cặp)",drainWire:"Không",ratings:{heat:3,oil:4,noise:4,flame:4,torsion:0,flex:0,dragChain:"★★★★★★"},rohs:"Có",standardLength:"200m",insulationResistance:"> 5,000 MΩ·km@20°C",dielectricStrength:"AC700 V/1min",surfaceMark:"TAIYO/TSUNET FAMV-5E26SB E67647-TK AWM 20276 VW-1 LF R15 length mark",pdf:"FAMV-5E26SBBK_EN-1.pdf",awgVariants:[{awg:"26 (4P)",structure:"30/0.08",insulDia:"0.9",totalDia:"6.4",weight:"49",current:"—",resistance:"< 146"}],impedance:"85-115 Ω",freqSpecs:{insertion:{"1":"< 2.0","4":"< 4.1","16":"< 8.2","31.25":"< 11.7","100":"< 22.0"},next:{"1":"> 65.3","4":"> 56.3","16":"> 47.2","31.25":"> 42.9","100":"> 35.3"},psnext:{"1":"> 62.3","4":"> 53.3","16":"> 44.2","31.25":"> 39.9","100":"> 32.3"}},certs:{UL:"✓ (STYLE 20276)",cUL:"✕",CE:"✕",MTW_TC:"✕",JIS:"✕"}},
+  {id:8,model:"FAMV-5E26SBX(BK)",modelDisplay:"FAMV-5E26SBX(BK)",type:"CAT5e Ethernet high flexible cable (with drain wire)",typeShort:"CAT5e Ethernet",voltage:"30V",temperature:"80°C",application:"Drag chain wiring for high-speed moving",appShort:"Drag chain Ethernet",description:"Cáp Ethernet CAT5e mềm dẻo cao, CÓ lõi thoát (drain wire). 4 cặp, AWG 26. Đạt thêm cUL. Đặt hàng theo yêu cầu.",standard:"UL AWM (UL 758, UL STYLE 20276); cUL AWM (CSA C22.2 No.210, CSA AWM IIA/B)",insulation:"Cross-Linked polyethylene (XLPE)",jacket:"Oil, heat-resistant flexible PVC (Black)",conductorCount:"4P (4 cặp)",drainWire:"Có (Tinned annealed coppers)",ratings:{heat:3,oil:4,noise:4,flame:4,torsion:0,flex:0,dragChain:"★★★★★★"},rohs:"Có (R15 - EU 2011/65/EU & (EU)2015/863)",standardLength:"Make-to-order (Đặt hàng)",insulationResistance:"> 5,000 MΩ·km@20°C",dielectricStrength:"AC700 V/1min",surfaceMark:"TAIYO/... AWM 20276 VW-1 LF R15",pdf:"FAMV-5E26SBXBK_EN-1.pdf",awgVariants:[{awg:"26 (4P)",structure:"30/0.08",insulDia:"0.9",totalDia:"6.4",weight:"50",current:"—",resistance:"< 146"}],impedance:"85-115 Ω",freqSpecs:{insertion:{"1":"< 2.0","4":"< 4.1","16":"< 8.2","31.25":"< 11.7","100":"< 22.0"},next:{"1":"> 65.3","4":"> 56.3","16":"> 47.2","31.25":"> 42.9","100":"> 35.3"},psnext:{"1":"> 62.3","4":"> 53.3","16":"> 44.2","31.25":"> 39.9","100":"> 32.3"}},certs:{UL:"✓ (STYLE 20276)",cUL:"✓ (AWM IIA/B)",CE:"✕",MTW_TC:"✕",JIS:"✕"}}
+];
+
+// ===== STATE =====
+let compareList = [];
+let currentSort = 'default';
+let currentProduct = null;
+
+function buildFilters() {
+  const types = [...new Set(products.map(p => p.typeShort))].sort();
+  const voltages = [...new Set(products.map(p => p.voltage))].sort((a,b) => parseInt(b)-parseInt(a));
+  const apps = [...new Set(products.map(p => p.appShort))].sort();
+  document.getElementById('typeFilters').innerHTML = types.map(t => {const c=products.filter(p=>p.typeShort===t).length;return '<div class="filter-group"><label><input type="checkbox" value="'+t+'" onchange="applyFilters()"><span>'+t+'</span><span class="filter-count">'+c+'</span></label></div>';}).join('');
+  document.getElementById('voltageFilters').innerHTML = voltages.map(v => {const c=products.filter(p=>p.voltage===v).length;return '<div class="filter-group"><label><input type="checkbox" value="'+v+'" onchange="applyFilters()"><span>'+v+'</span><span class="filter-count">'+c+'</span></label></div>';}).join('');
+  document.getElementById('appFilters').innerHTML = apps.map(a => {const c=products.filter(p=>p.appShort===a).length;return '<div class="filter-group"><label><input type="checkbox" value="'+a+'" onchange="applyFilters()"><span>'+a+'</span><span class="filter-count">'+c+'</span></label></div>';}).join('');
+}
+
+function getActiveFilters() {
+  return {
+    typeFilters: [...document.querySelectorAll('#typeFilters input:checked')].map(cb => cb.value),
+    voltageFilters: [...document.querySelectorAll('#voltageFilters input:checked')].map(cb => cb.value),
+    appFilters: [...document.querySelectorAll('#appFilters input:checked')].map(cb => cb.value),
+    searchQuery: document.getElementById('searchInput').value.toLowerCase().trim()
+  };
+}
+
+function applyFilters() {
+  const {typeFilters, voltageFilters, appFilters, searchQuery} = getActiveFilters();
+  let filtered = products.filter(p => {
+    if (typeFilters.length && !typeFilters.includes(p.typeShort)) return false;
+    if (voltageFilters.length && !voltageFilters.includes(p.voltage)) return false;
+    if (appFilters.length && !appFilters.includes(p.appShort)) return false;
+    if (searchQuery) {
+      const h = (p.model+' '+p.type+' '+p.application+' '+p.appShort+' '+p.voltage+' '+p.temperature+' '+p.description+' '+p.conductorCount+' '+p.standard).toLowerCase();
+      if (!h.includes(searchQuery)) return false;
+    }
+    return true;
+  });
+  if (currentSort === 'voltage') filtered.sort((a,b) => parseInt(b.voltage)-parseInt(a.voltage));
+  else if (currentSort === 'name') filtered.sort((a,b) => a.model.localeCompare(b.model));
+  renderProducts(filtered);
+}
+
+function sortProducts(type) {
+  currentSort = type;
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector('.sort-btn[onclick="sortProducts(\''+type+'\')"]');
+  if (btn) btn.classList.add('active');
+  applyFilters();
+}
+
+function resetFilters() {
+  document.querySelectorAll('.sidebar input[type="checkbox"]').forEach(cb => cb.checked = false);
+  document.getElementById('searchInput').value = '';
+  currentSort = 'default';
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+  const defBtn = document.querySelector('.sort-btn[onclick="sortProducts(\'default\')"]');
+  if (defBtn) defBtn.classList.add('active');
+  applyFilters();
+}
+
+function getTopStars(ratings) {
+  const items = [
+    {label:'Chịu nhiệt',val:ratings.heat},
+    {label:'Chống dầu',val:ratings.oil},
+    {label:'Chống ồn',val:ratings.noise},
+    {label:'Chống cháy',val:ratings.flame},
+    {label:'Drag chain',val:ratings.dragChain==='50 triệu lần'?7:ratings.dragChain==='10 triệu lần'?5:typeof ratings.dragChain==='number'?ratings.dragChain:0}
+  ];
+  return items.filter(i=>i.val>0).sort((a,b)=>b.val-a.val).slice(0,3).map(i=>({label:i.label,stars:'★'.repeat(Math.min(i.val,7))}));
+}
+
+function renderProducts(filtered) {
+  const grid = document.getElementById('productGrid');
+  const empty = document.getElementById('emptyState');
+  document.getElementById('displayCount').textContent = filtered.length;
+  if (filtered.length === 0) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  grid.innerHTML = filtered.map(p => {
+    const isCompared = compareList.includes(p.id);
+    const topStars = getTopStars(p.ratings);
+    return '<div class="product-card" onclick="openDetail('+p.id+')">'+
+      '<div class="card-header"><div class="card-model">'+p.modelDisplay+'</div><div class="card-type">'+p.typeShort+'</div></div>'+
+      '<div class="card-specs"><div class="card-spec"><span class="card-spec-label">Điện áp</span><span class="card-spec-value">'+p.voltage+'</span></div>'+
+      '<div class="card-spec"><span class="card-spec-label">Nhiệt độ</span><span class="card-spec-value">'+p.temperature+'</span></div>'+
+      '<div class="card-spec"><span class="card-spec-label">Số lõi/cặp</span><span class="card-spec-value">'+p.conductorCount+'</span></div></div>'+
+      '<div class="card-stars">'+topStars.map(s=>'<div class="star-item"><span>'+s.label+'</span><span class="stars">'+s.stars+'</span></div>').join('')+'</div>'+
+      '<div class="card-stars" style="margin-bottom:4px;"><div class="star-item" style="color:var(--text-muted);font-size:0.73rem;">'+p.appShort+'</div></div>'+
+      '<div class="card-actions" onclick="event.stopPropagation()">'+
+      '<button class="card-btn detail-btn" onclick="openDetail('+p.id+')">📋 Chi tiết</button>'+
+      '<button class="card-btn compare-btn '+(isCompared?'active':'')+'" onclick="toggleCompare('+p.id+')">'+(isCompared?'✓ Đã chọn':'📊 So sánh')+'</button></div></div>';
+  }).join('');
+}
+
+function toggleCompare(productId) {
+  const idx = compareList.indexOf(productId);
+  if (idx > -1) { compareList.splice(idx, 1); }
+  else {
+    if (compareList.length >= 3) { alert('Chỉ có thể so sánh tối đa 3 sản phẩm.'); return; }
+    compareList.push(productId);
+  }
+  updateCompareBar();
+  applyFilters();
+}
+
+function updateCompareBar() {
+  const bar = document.getElementById('compareBar');
+  const items = document.getElementById('compareItems');
+  const btn = document.getElementById('btnCompareNow');
+  if (compareList.length === 0) { bar.classList.remove('visible'); }
+  else {
+    bar.classList.add('visible');
+    items.innerHTML = compareList.map(id => {
+      const p = products.find(p => p.id === id);
+      return '<div class="compare-chip">'+p.modelDisplay+'<span class="remove" onclick="event.stopPropagation();toggleCompare('+id+')">✕</span></div>';
+    }).join('');
+    btn.disabled = compareList.length < 2;
+  }
+}
+
+function clearCompare() { compareList = []; updateCompareBar(); applyFilters(); }
+
+function openDetail(productId) {
+  currentProduct = products.find(p => p.id === productId);
+  if (!currentProduct) return;
+  document.getElementById('modalTitle').textContent = currentProduct.modelDisplay;
+  document.getElementById('detailModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  document.querySelectorAll('#modalTabs .modal-tab').forEach(t => t.classList.remove('active'));
+  const ovTab = document.querySelector('#modalTabs .modal-tab[data-tab="tab-overview"]');
+  if (ovTab) ovTab.classList.add('active');
+  document.getElementById('modalBody').innerHTML = '';
+  renderTabOverview();
+  renderTabSpecs();
+  renderTabRatings();
+  renderTabCerts();
+  renderTabPdf();
+  document.querySelectorAll('.modal-tab-content').forEach(c => c.classList.remove('active'));
+  const ov = document.getElementById('tab-overview-content');
+  if (ov) ov.classList.add('active');
+}
+
+function closeModal() { document.getElementById('detailModal').classList.remove('active'); document.body.style.overflow = ''; currentProduct = null; }
+
+function switchTab(tabId) {
+  document.querySelectorAll('#modalTabs .modal-tab').forEach(t => t.classList.remove('active'));
+  const tab = document.querySelector('#modalTabs .modal-tab[data-tab="'+tabId+'"]');
+  if (tab) tab.classList.add('active');
+  document.querySelectorAll('.modal-tab-content').forEach(c => c.classList.remove('active'));
+  const content = document.getElementById(tabId+'-content');
+  if (content) content.classList.add('active');
+}
+
+function renderTabOverview() {
+  const p = currentProduct;
+  const certBadges = [];
+  if (p.certs.UL !== '✕') certBadges.push('UL');
+  if (p.certs.cUL !== '✕') certBadges.push('cUL');
+  if (p.certs.CE !== '✕') certBadges.push('CE/TÜV');
+  if (p.certs.MTW_TC !== '✕') certBadges.push('MTW/TC');
+  if (p.certs.JIS !== '✕') certBadges.push('JIS');
+  const topStars = getTopStars(p.ratings);
+  let html = '<div style="margin-bottom:20px;"><p style="color:var(--text-secondary);line-height:1.6;font-size:0.9rem;">'+p.description+'</p></div>';
+  html += '<div class="info-grid">';
+  html += '<div class="info-item"><div class="info-label">Loại cáp</div><div class="info-value">'+p.type+'</div></div>';
+  html += '<div class="info-item"><div class="info-label">Điện áp định mức</div><div class="info-value">'+p.voltage+'</div></div>';
+  html += '<div class="info-item"><div class="info-label">Nhiệt độ định mức</div><div class="info-value">'+p.temperature+'</div></div>';
+  html += '<div class="info-item"><div class="info-label">Số lõi/cặp</div><div class="info-value">'+p.conductorCount+'</div></div>';
+  html += '<div class="info-item"><div class="info-label">Cách điện</div><div class="info-value" style="font-size:0.82rem;">'+p.insulation+'</div></div>';
+  html += '<div class="info-item"><div class="info-label">Vỏ bọc</div><div class="info-value" style="font-size:0.82rem;">'+p.jacket+'</div></div>';
+  html += '<div class="info-item"><div class="info-label">Lõi thoát</div><div class="info-value">'+p.drainWire+'</div></div>';
+  html += '<div class="info-item"><div class="info-label">Độ dài tiêu chuẩn</div><div class="info-value">'+p.standardLength+'</div></div>';
+  html += '<div class="info-item"><div class="info-label">Điện trở cách điện</div><div class="info-value" style="font-size:0.8rem;">'+p.insulationResistance+'</div></div>';
+  html += '<div class="info-item"><div class="info-label">Độ bền điện</div><div class="info-value">'+p.dielectricStrength+'</div></div>';
+  html += '<div class="info-item"><div class="info-label">RoHS</div><div class="info-value">'+p.rohs+'</div></div>';
+  if (p.impedance) html += '<div class="info-item"><div class="info-label">Trở kháng đặc tính</div><div class="info-value">'+p.impedance+'</div></div>';
+  html += '</div>';
+  html += '<div style="margin-top:20px;"><div style="font-size:0.78rem;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px;">Chứng nhận</div><div>'+certBadges.map(c=>'<span class="cert-badge pass">✓ '+c+'</span>').join('')+'</div></div>';
+  html += '<div style="margin-top:16px;"><div style="font-size:0.78rem;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px;">Đặc điểm nổi bật</div><div style="display:flex;flex-wrap:wrap;gap:8px;">'+topStars.map(s=>'<span style="background:rgba(212,160,23,0.1);color:var(--gold-light);padding:4px 10px;border-radius:12px;font-size:0.8rem;">'+s.label+': '+s.stars+'</span>').join('')+'</div></div>';
+  html += '<div style="margin-top:16px;"><div style="font-size:0.78rem;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px;">Ứng dụng</div><p style="color:var(--text-secondary);font-size:0.88rem;">'+p.application+'</p></div>';
+  html += '<div style="margin-top:16px;"><div style="font-size:0.78rem;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px;">Ghi chú bề mặt</div><p style="color:var(--text-secondary);font-size:0.8rem;word-break:break-all;">'+p.surfaceMark+'</p></div>';
+  html += '<div style="margin-top:16px;"><div style="font-size:0.78rem;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px;">Tiêu chuẩn</div><p style="color:var(--text-secondary);font-size:0.85rem;">'+p.standard+'</p></div>';
+  const c = document.createElement('div'); c.id='tab-overview-content'; c.className='modal-tab-content active'; c.innerHTML=html;
+  document.getElementById('modalBody').appendChild(c);
+}
+
+function renderTabSpecs() {
+  const p = currentProduct;
+  let html = '<table class="detail-table"><thead><tr><th>AWG</th><th>Cấu trúc dây</th><th>ĐK cách điện (mm)</th><th>ĐK tổng (mm)</th><th>Trọng lượng (kg/km)</th><th>Dòng điện (A)</th><th>Điện trở (Ω/km)</th></tr></thead><tbody>';
+  html += p.awgVariants.map(v=>'<tr><td style="font-weight:600;color:var(--gold-light);">'+v.awg+'</td><td>'+v.structure+'</td><td>'+v.insulDia+'</td><td>'+v.totalDia+'</td><td>'+v.weight+'</td><td>'+v.current+'</td><td>'+v.resistance+'</td></tr>').join('');
+  html += '</tbody></table>';
+  if (p.freqSpecs) {
+    html += '<div style="margin-top:20px;font-weight:700;color:var(--gold-light);font-size:0.9rem;margin-bottom:12px;">⚡ Đặc tính điện tần số cao</div>';
+    html += '<table class="detail-table"><thead><tr><th>Đặc tính</th><th>1 MHz</th><th>4 MHz</th><th>16 MHz</th><th>31.25 MHz</th><th>100 MHz</th></tr></thead><tbody>';
+    html += '<tr><td style="font-weight:600;">Insertion Loss (dB/35m)</td><td>'+p.freqSpecs.insertion["1"]+'</td><td>'+p.freqSpecs.insertion["4"]+'</td><td>'+p.freqSpecs.insertion["16"]+'</td><td>'+p.freqSpecs.insertion["31.25"]+'</td><td>'+p.freqSpecs.insertion["100"]+'</td></tr>';
+    html += '<tr><td style="font-weight:600;">NEXT Loss (dB)</td><td>'+p.freqSpecs.next["1"]+'</td><td>'+p.freqSpecs.next["4"]+'</td><td>'+p.freqSpecs.next["16"]+'</td><td>'+p.freqSpecs.next["31.25"]+'</td><td>'+p.freqSpecs.next["100"]+'</td></tr>';
+    html += '<tr><td style="font-weight:600;">PSNEXT Loss (dB)</td><td>'+p.freqSpecs.psnext["1"]+'</td><td>'+p.freqSpecs.psnext["4"]+'</td><td>'+p.freqSpecs.psnext["16"]+'</td><td>'+p.freqSpecs.psnext["31.25"]+'</td><td>'+p.freqSpecs.psnext["100"]+'</td></tr>';
+    html += '</tbody></table>';
+  }
+  const c = document.createElement('div'); c.id='tab-specs-content'; c.className='modal-tab-content'; c.innerHTML=html;
+  document.getElementById('modalBody').appendChild(c);
+}
+
+function renderTabRatings() {
+  const p = currentProduct;
+  const items = [
+    {label:'Chống nhiệt',key:'heat',max:7},
+    {label:'Chống dầu',key:'oil',max:7},
+    {label:'Chống ồn',key:'noise',max:7},
+    {label:'Chống cháy',key:'flame',max:7},
+    {label:'Chống xoắn',key:'torsion',max:7},
+    {label:'Chống uốn',key:'flex',max:7},
+    {label:'Drag chain',key:'dragChain',max:7,special:true}
+  ];
+  let html = '';
+  items.forEach(item => {
+    let val, displayVal;
+    if (item.special) {
+      if (p.ratings.dragChain==='50 triệu lần') {val=7;displayVal='50 triệu lần';}
+      else if (p.ratings.dragChain==='10 triệu lần') {val=5;displayVal='10 triệu lần';}
+      else if (typeof p.ratings.dragChain==='string'&&p.ratings.dragChain.includes('★')) {val=(p.ratings.dragChain.match(/★/g)||[]).length;displayVal=p.ratings.dragChain;}
+      else {val=p.ratings.dragChain||0;displayVal=val===0?'—':val+'/7';}
+    } else {val=p.ratings[item.key]||0;displayVal=val===0?'—':val+'/7';}
+    html += '<div class="star-rating"><span class="label">'+item.label+'</span><div class="bar"><div class="fill" style="width:'+(val/item.max*100)+'%"></div></div><span class="value">'+displayVal+'</span></div>';
+  });
+  const c = document.createElement('div'); c.id='tab-ratings-content'; c.className='modal-tab-content'; c.innerHTML=html;
+  document.getElementById('modalBody').appendChild(c);
+}
+
+function renderTabCerts() {
+  const p = currentProduct;
+  const certs = [
+    {label:'UL AWM',value:p.certs.UL},
+    {label:'cUL AWM',value:p.certs.cUL},
+    {label:'CE / TÜV',value:p.certs.CE},
+    {label:'UL MTW / TC',value:p.certs.MTW_TC},
+    {label:'JIS',value:p.certs.JIS}
+  ];
+  let html = '<table class="detail-table"><thead><tr><th>Chứng nhận</th><th>Trạng thái</th><th>Chi tiết</th></tr></thead><tbody>';
+  certs.forEach(c => {
+    const isPass = c.value !== '✕';
+    const detail = isPass ? c.value.replace('✓ (','').replace(')','') : '—';
+    html += '<tr><td style="font-weight:600;">'+c.label+'</td><td><span class="cert-badge '+(isPass?'pass':'na')+'">'+(isPass?'✓ Đạt':'✕ Không')+'</span></td><td style="font-size:0.82rem;">'+detail+'</td></tr>';
+  });
+  html += '</tbody></table>';
+  const c = document.createElement('div'); c.id='tab-certs-content'; c.className='modal-tab-content'; c.innerHTML=html;
+  document.getElementById('modalBody').appendChild(c);
+}
+
+function renderTabPdf() {
+  const p = currentProduct;
+  let html = '<a href="'+p.pdf+'" target="_blank" class="pdf-link" style="display:inline-flex;">📄 Mở file PDF trong tab mới</a>';
+  html += '<p style="color:var(--text-muted);font-size:0.8rem;margin-bottom:12px;">File: '+p.pdf+'</p>';
+  html += '<iframe src="'+p.pdf+'#toolbar=1&navpanes=1" class="pdf-viewer"></iframe>';
+  html += '<p style="color:var(--text-muted);font-size:0.75rem;margin-top:8px;">Nếu PDF không hiển thị, vui lòng nhấn nút bên trên.</p>';
+  const c = document.createElement('div'); c.id='tab-pdf-content'; c.className='modal-tab-content'; c.innerHTML=html;
+  document.getElementById('modalBody').appendChild(c);
+}
+
+function showComparison() {
+  if (compareList.length < 2) return;
+  const compProducts = compareList.map(id=>products.find(p=>p.id===id)).filter(Boolean);
+  let html = '<table class="compare-table"><thead><tr><th class="param-col">Thông số</th>';
+  compProducts.forEach(p=>{html+='<th>'+p.modelDisplay+'</th>';});
+  html += '</tr></thead><tbody>';
+  const rows = [
+    {label:'Loại cáp',get:p=>p.typeShort},{label:'Điện áp',get:p=>p.voltage},{label:'Nhiệt độ',get:p=>p.temperature},
+    {label:'Số lõi/cặp',get:p=>p.conductorCount},{label:'Cách điện',get:p=>p.insulation},{label:'Vỏ bọc',get:p=>p.jacket},
+    {label:'Lõi thoát',get:p=>p.drainWire},{label:'Ứng dụng',get:p=>p.appShort},{label:'Độ dài chuẩn',get:p=>p.standardLength},
+    {label:'Điện trở cách điện',get:p=>p.insulationResistance},{label:'Độ bền điện',get:p=>p.dielectricStrength},
+    {label:'Chống nhiệt',get:p=>p.ratings.heat+'/7'},{label:'Chống dầu',get:p=>p.ratings.oil+'/7'},{label:'Chống ồn',get:p=>p.ratings.noise+'/7'},
+    {label:'Chống cháy',get:p=>p.ratings.flame+'/7'},{label:'Drag chain',get:p=>typeof p.ratings.dragChain==='string'?p.ratings.dragChain:p.ratings.dragChain+'/7'},
+    {label:'RoHS',get:p=>p.rohs},{label:'UL',get:p=>p.certs.UL==='✕'?'✕':'✓'},{label:'cUL',get:p=>p.certs.cUL==='✕'?'✕':'✓'},
+    {label:'CE/TÜV',get:p=>p.certs.CE==='✕'?'✕':'✓'},{label:'MTW/TC',get:p=>p.certs.MTW_TC==='✕'?'✕':'✓'},{label:'JIS',get:p=>p.certs.JIS==='✕'?'✕':'✓'}
+  ];
+  rows.forEach(row=>{
+    html+='<tr><td class="param-col">'+row.label+'</td>';
+    compProducts.forEach(p=>{html+='<td>'+row.get(p)+'</td>';});
+    html+='</tr>';
+  });
+  html += '</tbody></table>';
+  document.getElementById('compareBody').innerHTML = html;
+  document.getElementById('compareModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCompareModal() { document.getElementById('compareModal').classList.remove('active'); document.body.style.overflow = ''; }
+
+function init() {
+  buildFilters();
+  applyFilters();
+  document.querySelectorAll('.modal-tab').forEach(tab => {
+    tab.addEventListener('click', function() { switchTab(this.dataset.tab); });
+  });
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    if (document.getElementById('compareModal').classList.contains('active')) closeCompareModal();
+    else if (document.getElementById('detailModal').classList.contains('active')) closeModal();
+  }
+});
+</script>
+</body>
+</html>
