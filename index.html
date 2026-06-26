@@ -279,6 +279,22 @@ body {
 .sort-btns { display: flex; gap: 8px; }
 .sort-btn { padding: 8px 14px; background: var(--bg-secondary); border: 1px solid var(--border); color: var(--text-secondary); font-family: inherit; font-size: 0.82rem; border-radius: 20px; cursor: pointer; transition: var(--transition); font-weight: 500; }
 .sort-btn:hover { border-color: var(--gold); color: var(--text-primary); }
+.export-btn {
+  padding: 7px 16px;
+  background: linear-gradient(135deg, #1a3a1a, #1e4a1e);
+  border: 1px solid #2a6a2a;
+  border-radius: 50px;
+  color: #4caf50;
+  font-family: inherit; font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; transition: var(--transition);
+  white-space: nowrap; margin-left: 8px;
+}
+.export-btn:hover {
+  background: linear-gradient(135deg, #1e4a1e, #2a5a2a);
+  border-color: #4caf50;
+  color: #66d96a;
+  box-shadow: 0 2px 12px rgba(76,175,80,0.2);
+}
 .sort-btn.active { background: rgba(212,160,23,0.15); border-color: var(--gold); color: var(--gold-light); }
 .compare-bar { display: none; background: var(--bg-secondary); border: 1px solid var(--gold-dark); border-radius: var(--radius); padding: 14px 20px; margin-bottom: 20px; align-items: center; gap: 16px; flex-wrap: wrap; }
 .compare-bar.visible { display: flex; }
@@ -411,6 +427,7 @@ body {
         <button class="sort-btn active" onclick="sortProducts('default')">Mặc định</button>
         <button class="sort-btn" onclick="sortProducts('voltage')">Điện áp</button>
         <button class="sort-btn" onclick="sortProducts('name')">Tên A-Z</button>
+        <button class="export-btn" onclick="exportToExcel()" title="Xuất danh sách sản phẩm đang hiển thị ra Excel">📥 Xuất Excel</button>
       </div>
     </div>
     <div class="compare-bar" id="compareBar">
@@ -785,6 +802,68 @@ function renderKnowledgeTab(tabId) {
       '</tbody></table></div>'+
     '</div>';
   }body.scrollTop = 0;
+}
+
+function exportToExcel() {
+  // Get currently displayed products (filtered)
+  const cards = document.querySelectorAll('#productGrid .product-card');
+  if (cards.length === 0) { alert('Không có sản phẩm nào để xuất!'); return; }
+  
+  // Collect product IDs from the rendered cards
+  const visibleIds = [];
+  cards.forEach(card => {
+    const onclick = card.getAttribute('onclick') || '';
+    const match = onclick.match(/openDetail\((\d+)\)/);
+    if (match) visibleIds.push(parseInt(match[1]));
+  });
+  
+  const exportProducts = products.filter(p => visibleIds.includes(p.id));
+  if (exportProducts.length === 0) { alert('Không có sản phẩm nào!'); return; }
+  
+  // Build HTML table for Excel
+  let html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">';
+  html += '<head><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>';
+  html += '<x:Name>CamTech Cable Products</x:Name><x:WorksheetOptions><x:Panes></x:Panes></x:WorksheetOptions></x:ExcelWorksheet>';
+  html += '</x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body>';
+  html += '<table border="1">';
+  
+  // Header row
+  html += '<tr style="background:#d4a017;color:#1a1a2e;font-weight:bold;">';
+  const headers = ['Model', 'Thương hiệu', 'Loại cáp', 'Điện áp', 'Nhiệt độ', 'Số lõi/cặp', 'Ứng dụng', 'Mô tả', 'Tiêu chuẩn', 'Cách điện', 'Vỏ bọc', 'RoHS', 'PDF'];
+  headers.forEach(h => { html += '<th>' + h + '</th>'; });
+  html += '</tr>';
+  
+  // Data rows
+  exportProducts.forEach(p => {
+    html += '<tr>';
+    html += '<td>' + (p.modelDisplay || '') + '</td>';
+    html += '<td>' + (p.brand || '') + '</td>';
+    html += '<td>' + (p.type || '') + '</td>';
+    html += '<td>' + (p.voltage || '') + '</td>';
+    html += '<td>' + (p.temperature || '') + '</td>';
+    html += '<td>' + (p.conductorCount || '') + '</td>';
+    html += '<td>' + (p.application || '') + '</td>';
+    html += '<td>' + (p.description || '') + '</td>';
+    html += '<td>' + (p.standard || '') + '</td>';
+    html += '<td>' + (p.insulation || '') + '</td>';
+    html += '<td>' + (p.jacket || '') + '</td>';
+    html += '<td>' + (p.rohs || '') + '</td>';
+    html += '<td>' + (p.pdf || '') + '</td>';
+    html += '</tr>';
+  });
+  
+  html += '</table></body></html>';
+  
+  // Download
+  const blob = new Blob(['\ufeff' + html], {type: 'application/vnd.ms-excel;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'CamTech_Cable_Products.xls';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
 function closeModal() { document.getElementById('detailModal').classList.remove('active'); document.body.style.overflow = ''; currentProduct = null; }
