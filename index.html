@@ -463,10 +463,6 @@ body {
 const AUTH_PASSWORD = "camtech@2026"; // doi mat khau o day
 const SESSION_KEY = "taiyo_auth";
 
-if (sessionStorage.getItem(SESSION_KEY) === "true") {
-  unlockApp();
-}
-
 function checkPassword() {
   const input = document.getElementById("loginPassword");
   const error = document.getElementById("loginError");
@@ -549,6 +545,10 @@ const products = [
 let compareList = [];
 let currentSort = 'default';
 let currentProduct = null;
+
+if (sessionStorage.getItem(SESSION_KEY) === "true") {
+  unlockApp();
+}
 
 function buildFilters() {
   const brands = [...new Set(products.map(p => p.brand))].sort();
@@ -801,7 +801,77 @@ function renderKnowledgeTab(tabId) {
       '<tr><td style="padding:6px 8px">Tín hiệu mạch yếu</td><td style="padding:6px 8px">Công nghiệp</td><td style="padding:6px 8px;text-align:center">Có/Không</td><td style="padding:6px 8px;font-weight:600;color:#f0c050">KVC-43BX / BXS</td></tr>'+
       '</tbody></table></div>'+
     '</div>';
-  }body.scrollTop = 0;
+  } else if (tabId === 'competitors') {
+    body.innerHTML = '<div class="knowledge-section"><h3>📈 Đối Thủ Cạnh Tranh & Phân Tích Thị Trường</h3>'+
+      '<div class="knowledge-card"><h4>🏢 Tổng Quan Đối Thủ</h4>'+
+      '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:0.78rem;color:var(--text-secondary)">'+
+      '<thead><tr style="background:var(--bg-card);border-bottom:2px solid var(--gold-dark)">'+
+      '<th style="padding:8px;text-align:left;color:var(--gold-light)">Thương hiệu</th>'+
+      '<th style="padding:8px;text-align:center;color:var(--gold-light)">Xuất xứ</th>'+
+      '<th style="padding:8px;text-align:center;color:var(--gold-light)">Số SP</th>'+
+      '<th style="padding:8px;text-align:left;color:var(--gold-light)">Phân khúc giá</th>'+
+      '<th style="padding:8px;text-align:left;color:var(--gold-light)">Giá vs CamTech</th>'+
+      '<th style="padding:8px;text-align:center;color:var(--gold-light)">Bảo hành CK</th></tr></thead>'+
+      '<tbody>'+
+      '<tr style="background:rgba(212,160,23,0.08);border-bottom:1px solid var(--border)"><td style="padding:8px;font-weight:700;color:#f0c050">CamTech</td><td style="padding:8px;text-align:center">🇯🇵 Nhật</td><td style="padding:8px;text-align:center">46</td><td style="padding:8px">Trung bình - TB Cao</td><td style="padding:8px;color:#28a745">Baseline</td><td style="padding:8px;text-align:center">TAIYO: 10-100M</td></tr>'+
+      '<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px;font-weight:700">IGUS</td><td style="padding:8px;text-align:center">🇩🇪 Đức</td><td style="padding:8px;text-align:center">1,350+</td><td style="padding:8px">Cao - Rất cao</td><td style="padding:8px;color:#dc3545">+20% đến +60%</td><td style="padding:8px;text-align:center">✅ 100M / 36 tháng</td></tr>'+
+      '<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px;font-weight:700">LAPP</td><td style="padding:8px;text-align:center">🇩🇪 Đức</td><td style="padding:8px;text-align:center">33,000+</td><td style="padding:8px">TB Cao - Cao</td><td style="padding:8px;color:#dc3545">+15% đến +50%</td><td style="padding:8px;text-align:center">❌ Không</td></tr>'+
+      '<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px;font-weight:700">HELUKABEL</td><td style="padding:8px;text-align:center">🇩🇪 Đức</td><td style="padding:8px;text-align:center">33,000+</td><td style="padding:8px">Trung bình - Cao</td><td style="padding:8px;color:#dc3545">+10% đến +40%</td><td style="padding:8px;text-align:center">❌ Không</td></tr>'+
+      '<tr style="border-bottom:1px solid var(--border)"><td style="padding:8px;font-weight:700">Belden</td><td style="padding:8px;text-align:center">🇺🇸 Mỹ</td><td style="padding:8px;text-align:center">~5,000+</td><td style="padding:8px">Cao - Rất cao</td><td style="padding:8px;color:#dc3545">+25% đến +70%</td><td style="padding:8px;text-align:center">❌ Không</td></tr>'+
+      '</tbody></table></div></div>'+
+      '<div class="knowledge-card"><h4>⚔️ Map Đối Thủ Trực Tiếp — Các Dòng Chủ Lực</h4>'+
+      '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:0.75rem;color:var(--text-secondary)">'+
+      '<thead><tr style="background:var(--bg-card);border-bottom:2px solid var(--gold-dark)">'+
+      '<th style="padding:6px;text-align:left;color:var(--gold-light)">Nhóm</th>'+
+      '<th style="padding:6px;text-align:left;color:var(--gold-light)">CamTech</th>'+
+      '<th style="padding:6px;text-align:left;color:var(--gold-light)">Đối thủ</th>'+
+      '<th style="padding:6px;text-align:left;color:var(--gold-light)">Lợi thế CamTech</th></tr></thead>'+
+      '<tbody>'+
+      '<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px;font-weight:600">Robot & Drag Chain</td><td style="padding:6px;color:#f0c050">TAIYO EXT-II<br>KURAMO VCT531/CE-531NZ</td><td style="padding:6px">IGUS chainflex<br>LAPP ÖLFLEX FD</td><td style="padding:6px;font-size:0.72rem">Giá thấp hơn 20-40%, chứng nhận UL/cUL/CE/JIS/PSE, TAIYO đạt 50-100M chu kỳ</td></tr>'+
+      '<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px;font-weight:600">Ethernet CN</td><td style="padding:6px;color:#f0c050">KURAMO KETH-PSB<br>KURAMO FANC-IEF</td><td style="padding:6px">LAPP ETHERLINE<br>Belden DataTuff</td><td style="padding:6px;font-size:0.72rem">Dòng 2 cặp chống nhiễu kép, siêu mỏng 5.2mm, có phiên bản di động</td></tr>'+
+      '<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px;font-weight:600">Điều khiển</td><td style="padding:6px;color:#f0c050">KURAMO SCUT6<br>KURAMO CE-531X</td><td style="padding:6px">LAPP ÖLFLEX<br>HELUKABEL</td><td style="padding:6px;font-size:0.72rem">Đa tiêu chuẩn toàn cầu (CE+UL+cUL+CCC+PSE+EAC), đường kính nhỏ, giá cạnh tranh</td></tr>'+
+      '<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px;font-weight:600">Tín hiệu/EMC</td><td style="padding:6px;color:#f0c050">KURAMO KRL-36<br>KURAMO KDF</td><td style="padding:6px">Belden Multi-pair<br>LAPP UNITRONIC</td><td style="padding:6px;font-size:0.72rem">KRL-36 tuân thủ NFPA 70/79, KDF cách điện ETFE chịu hóa chất độc đáo</td></tr>'+
+      '<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px;font-weight:600">Fieldbus</td><td style="padding:6px;color:#f0c050">KURAMO FANC-PW<br>KURAMO KND-SB</td><td style="padding:6px">LAPP BUS<br>HELUKABEL BUS</td><td style="padding:6px;font-size:0.72rem">FANC-PW tích hợp nguồn+tín hiệu 1 cáp, KND-SB có phiên bản di động cho xích cáp</td></tr>'+
+      '<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px;font-weight:600">Dây nguồn</td><td style="padding:6px;color:#f0c050">TAIYO UE/SSX<br>KURAMO CE-KMTW</td><td style="padding:6px">LAPP ÖLFLEX WIRE<br>HELUKABEL TOPFLEX</td><td style="padding:6px;font-size:0.72rem">CE-KMTW đa năng MTW/THW/AWM+CE+PSE, cỡ 0.5-150mm² trong 1 mã</td></tr>'+
+      '</tbody></table></div></div>'+
+      '<div class="knowledge-card"><h4>🔬 Ma Trận Chứng Nhận Toàn Cầu</h4>'+
+      '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:0.72rem;color:var(--text-secondary)">'+
+      '<thead><tr style="background:var(--bg-card);border-bottom:2px solid var(--gold-dark)">'+
+      '<th style="padding:6px;text-align:left;color:var(--gold-light)">Chứng nhận</th>'+
+      '<th style="padding:6px;text-align:left;color:var(--gold-light)">Thị trường</th>'+
+      '<th style="padding:6px;text-align:center;color:#f0c050">CamTech</th>'+
+      '<th style="padding:6px;text-align:center">IGUS</th>'+
+      '<th style="padding:6px;text-align:center">LAPP</th>'+
+      '<th style="padding:6px;text-align:center">HELUKABEL</th>'+
+      '<th style="padding:6px;text-align:center">Belden</th></tr></thead>'+
+      '<tbody>'+
+      '<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px;font-weight:600">UL</td><td style="padding:6px">Mỹ</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td></tr>'+
+      '<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px;font-weight:600">cUL/CSA</td><td style="padding:6px">Canada</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td></tr>'+
+      '<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px;font-weight:600">CE</td><td style="padding:6px">EU/EEA</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td></tr>'+
+      '<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px;font-weight:600">VDE</td><td style="padding:6px">Đức</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td></tr>'+
+      '<tr style="background:rgba(212,160,23,0.06);border-bottom:1px solid var(--border)"><td style="padding:6px;font-weight:600">JIS</td><td style="padding:6px">Nhật Bản</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td></tr>'+
+      '<tr style="background:rgba(212,160,23,0.06);border-bottom:1px solid var(--border)"><td style="padding:6px;font-weight:600">PSE</td><td style="padding:6px">Nhật Bản</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td></tr>'+
+      '<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px;font-weight:600">CCC</td><td style="padding:6px">Trung Quốc</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td></tr>'+
+      '<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px;font-weight:600">EAC</td><td style="padding:6px">Nga/CIS</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td></tr>'+
+      '<tr style="background:rgba(212,160,23,0.06);border-bottom:1px solid var(--border)"><td style="padding:6px;font-weight:600">NFPA 70/79</td><td style="padding:6px">Bắc Mỹ</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td></tr>'+
+      '<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px;font-weight:600">RoHS</td><td style="padding:6px">Toàn cầu</td><td style="padding:6px;text-align:center;color:#28a745">✅ 100%</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#28a745">✅</td></tr>'+
+      '<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px;font-weight:600">GOST-R</td><td style="padding:6px">Nga</td><td style="padding:6px;text-align:center;color:#28a745">✅</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td><td style="padding:6px;text-align:center;color:#dc3545">❌</td></tr>'+
+      '</tbody></table></div>'+
+      '<p style="margin-top:10px;font-size:0.72rem;color:#f0c050"><strong>🎯 Lợi thế độc quyền của CamTech:</strong> JIS, PSE, NFPA 70/79, GOST-R — 4 chứng nhận mà <u>không đối thủ châu Âu nào có</u>. Đặc biệt PSE là bắt buộc cho thị trường Nhật Bản.</p></div>'+
+      '<div class="knowledge-card"><h4>📋 Phân Tích SWOT — SEV / CamTech</h4>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px">'+
+      '<div style="background:rgba(40,167,69,0.08);border-left:3px solid #28a745;padding:12px;border-radius:6px"><h5 style="color:#28a745;margin:0 0 8px">💪 ĐIỂM MẠNH</h5><ul style="margin:0;padding-left:16px;font-size:0.72rem;color:var(--text-secondary);line-height:1.7">'+
+      '<li>Độc quyền TAIYO &amp; KURAMO tại VN</li><li>Chất lượng Nhật Bản — uy tín toàn cầu</li><li>Giá thấp hơn đối thủ châu Âu 10-40%</li><li>Đa chứng nhận: UL/cUL/CE/JIS/PSE/CCC/EAC</li><li>TAIYO robot: 50-100 triệu chu kỳ</li><li>Kho hàng tại VN — giao nhanh</li><li>KDF: cách điện ETFE chịu hóa chất</li></ul></div>'+
+      '<div style="background:rgba(220,53,69,0.08);border-left:3px solid #dc3545;padding:12px;border-radius:6px"><h5 style="color:#dc3545;margin:0 0 8px">⚠️ ĐIỂM YẾU</h5><ul style="margin:0;padding-left:16px;font-size:0.72rem;color:var(--text-secondary);line-height:1.7">'+
+      '<li>Thương hiệu chưa phổ biến như đối thủ</li><li>Chưa có Cat6/6A/7/8 (chỉ Cat5e)</li><li>Thiếu cáp plenum-rated &amp; LSZH</li><li>Chưa giải pháp tích hợp (cáp+connector)</li><li>Không có cáp servo/motor chuyên dụng</li><li>Không có cáp quang (fibre optic)</li><li>Ít lựa chọn PUR/TPE</li></ul></div>'+
+      '<div style="background:rgba(0,80,150,0.08);border-left:3px solid #005096;padding:12px;border-radius:6px"><h5 style="color:#005096;margin:0 0 8px">🚀 CƠ HỘI</h5><ul style="margin:0;padding-left:16px;font-size:0.72rem;color:var(--text-secondary);line-height:1.7">'+
+      '<li>VN tăng trưởng mạnh về tự động hóa</li><li>Nhà máy FDI cần cáp chứng nhận quốc tế</li><li>Nearshoring từ TQ sang VN</li><li>Cross-sell với SP điện khác của SEV</li><li>Nhu cầu cáp chống nhiễu tăng cao</li><li>Industrial Ethernet thay thế bus cũ</li><li>Thị trường ASEAN mở rộng</li></ul></div>'+
+      '<div style="background:rgba(212,160,23,0.08);border-left:3px solid #d4a017;padding:12px;border-radius:6px"><h5 style="color:#d4a017;margin:0 0 8px">⚡ THÁCH THỨC</h5><ul style="margin:0;padding-left:16px;font-size:0.72rem;color:var(--text-secondary);line-height:1.7">'+
+      '<li>Đối thủ châu Âu có mặt lâu năm tại VN</li><li>Cáp TQ giá rẻ cạnh tranh phân khúc value</li><li>Biến động tỷ giá JPY/VND</li><li>Khách lớn có thể nhập khẩu trực tiếp</li><li>Thay đổi quy định chứng nhận (RoHS, REACH)</li><li>Đối thủ mở rộng SX tại châu Á</li><li>Công nghệ wireless đe dọa một số ứng dụng</li></ul></div>'+
+      '</div></div>'+
+    '</div>';
+  }
+  body.scrollTop = 0;
 }
 
 function exportToExcel() {
@@ -1040,6 +1110,7 @@ document.addEventListener('keydown', function(e) {
       <button class="knowledge-tab" data-ktab="apps" onclick="switchKnowledgeTab('apps')">🏭 Ứng dụng</button>
       <button class="knowledge-tab" data-ktab="compare" onclick="switchKnowledgeTab('compare')">📊 So sánh</button>
       <button class="knowledge-tab" data-ktab="select" onclick="switchKnowledgeTab('select')">🎯 Cách chọn</button>
+      <button class="knowledge-tab" data-ktab="competitors" onclick="switchKnowledgeTab('competitors')">📈 Đối thủ & SWOT</button>
     </div>
     <div class="knowledge-body" id="knowledgeBody"></div>
   </div>
