@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bang Tra Cuu Cap KURAMO - CamTech</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Be Vietnam Pro',sans-serif;-webkit-font-smoothing:antialiased;background:#0d0d0d;color:#e0d5b8;padding:20px}
+  .container{max-width:1600px;margin:0 auto}
+  .header{text-align:center;padding:30px 0;border-bottom:2px solid #c8a84e;margin-bottom:24px}
+  .header h1{font-size:28px;font-weight:700;color:#d4af37;letter-spacing:1px}
+  .header .sub{font-size:14px;color:#9a8b6e;margin-top:6px}
+  .stats{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+  .stat-card{background:#1a1a1a;border:1px solid #3a3020;border-radius:8px;padding:12px 20px;text-align:center;min-width:100px}
+  .stat-card .num{font-size:24px;font-weight:700;color:#d4af37}
+  .stat-card .lbl{font-size:12px;color:#8a7e60}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .filter-btn{padding:6px 16px;border:1px solid #4a4020;border-radius:20px;background:#1a1a1a;color:#c8b87a;cursor:pointer;font-family:'Be Vietnam Pro',sans-serif;font-size:13px;transition:all .2s}
+  .filter-btn:hover{border-color:#d4af37;color:#d4af37}
+  .filter-btn.active{background:#d4af37;color:#0d0d0d;border-color:#d4af37;font-weight:600}
+  .search-box{width:100%;padding:10px 16px;background:#1a1a1a;border:1px solid #4a4020;border-radius:8px;color:#e0d5b8;font-family:'Be Vietnam Pro',sans-serif;font-size:14px;margin-bottom:16px;outline:none;transition:border-color .2s}
+  .search-box:focus{border-color:#d4af37}
+  .search-box::placeholder{color:#5a5040}
+  .legend{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:12px;font-size:12px;color:#8a7e60}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .legend .dot{width:10px;height:10px;border-radius:2px;display:inline-block}
+  .table-wrap{overflow-x:auto;border:1px solid #3a3020;border-radius:8px;background:#111}
+  table{width:100%;border-collapse:collapse;font-size:13px;min-width:1400px}
+  thead{position:sticky;top:0;z-index:2}
+  th{background:#1a1a1a;color:#d4af37;padding:10px 8px;text-align:left;font-weight:600;font-size:12px;border-bottom:2px solid #d4af37;white-space:nowrap}
+  td{padding:8px;border-bottom:1px solid #2a2515;vertical-align:top}
+  tr:hover td{background:#1a1810}
+  tr.hidden{display:none}
+  .badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;white-space:nowrap}
+  .badge-600{background:#3a1010;color:#ff6b6b}
+  .badge-300{background:#1a2a10;color:#7ec850}
+  .badge-150{background:#102030;color:#5ea8e0}
+  .badge-100{background:#201a30;color:#a082e0}
+  .badge-eth{background:#302010;color:#e0a050}
+  .badge-30{background:#1a2020;color:#50c8c8}
+  .badge-single{background:#2a1a10;color:#e08040}
+  .badge-shield{background:#1a2a2a;color:#50d0d0;font-size:10px}
+  .badge-noshield{background:#2a1a1a;color:#a06060;font-size:10px}
+  .badge-temp{background:#2a2010;color:#e0a040;font-size:10px}
+  .highlight{color:#d4af37;font-weight:600}
+  .muted{color:#7a6e50;font-size:11px}
+  .summary-section{margin-top:30px;display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:16px}
+  .summary-card{background:#1a1a1a;border:1px solid #3a3020;border-radius:8px;padding:16px}
+  .summary-card h3{color:#d4af37;font-size:15px;margin-bottom:10px;border-bottom:1px solid #3a3020;padding-bottom:8px}
+  .summary-card ul{list-style:none;font-size:13px;line-height:1.8}
+  .summary-card li::before{content:'\25B8 ';color:#d4af37}
+  .cell-desc{max-width:280px;font-size:12px;line-height:1.5;color:#b0a080}
+  .count{color:#8a7e60;font-size:12px;margin-left:6px}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>⚡ BẢNG TRA CỨU NHANH CÁP KURAMO</h1>
+<div class="sub">CamTech · TAIYO &amp; KURAMO · 38 sản phẩm · Cập nhật 29/06/2026</div>
+</div>
+<div class="stats" id="stats"></div>
+<input type="text" class="search-box" id="search" placeholder="🔍 Tìm kiếm: tên model, loại cáp, ứng dụng, tiêu chuẩn...">
+<div class="filters">
+<button class="filter-btn active" data-filter="all">Tất cả <span class="count">38</span></button>
+<button class="filter-btn" data-filter="600V">600V <span class="count">13</span></button>
+<button class="filter-btn" data-filter="300V">300V <span class="count">10</span></button>
+<button class="filter-btn" data-filter="150V">150V <span class="count">5</span></button>
+<button class="filter-btn" data-filter="Cat5e">Cat5e/Ethernet <span class="count">7</span></button>
+<button class="filter-btn" data-filter="shield">Có Shield <span class="count">15</span></button>
+<button class="filter-btn" data-filter="noshield">Không Shield <span class="count">18</span></button>
+<button class="filter-btn" data-filter="105C">105°C <span class="count">7</span></button>
+<button class="filter-btn" data-filter="90C">90°C <span class="count">6</span></button>
+<button class="filter-btn" data-filter="dieu-khien">Điều khiển</button>
+<button class="filter-btn" data-filter="tin-hieu">Tín hiệu</button>
+<button class="filter-btn" data-filter="ethernet">Ethernet</button>
+<button class="filter-btn" data-filter="robot">Robot/FA</button>
+</div>
+<div class="legend">
+<span><span class="dot" style="background:#ff6b6b"></span> 600V</span>
+<span><span class="dot" style="background:#7ec850"></span> 300V</span>
+<span><span class="dot" style="background:#5ea8e0"></span> 150V</span>
+<span><span class="dot" style="background:#a082e0"></span> &lt;100V</span>
+<span><span class="dot" style="background:#e0a050"></span> Cat5e/Ethernet</span>
+<span><span class="dot" style="background:#50d0d0"></span> Có shield</span>
+<span><span class="dot" style="background:#a06060"></span> Không shield</span>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr>
+<th>STT</th><th>Model</th><th>Loại cáp</th><th>Điện áp</th><th>Nhiệt độ</th><th>Số lõi/cặp</th><th>Ứng dụng chính</th><th>Tiêu chuẩn</th><th>Cách điện</th><th>Vỏ bọc</th>
+</tr></thead>
+<tbody id="table-body"></tbody>
+</table>
+</div>
+<div class="summary-section">
+<div class="summary-card">
+<h3>🎯 Chọn nhanh theo ứng dụng</h3>
+<ul>
+<li>Máy CNC, xích cáp, có dầu → <span class="highlight">VCT 531Z</span> hoặc <span class="highlight">VCT 531BX</span></li>
+<li>Robot, uốn liên tục, 105°C → <span class="highlight">VCTF 43Z</span> (Hypren)</li>
+<li>Xuất khẩu EU+Mỹ → <span class="highlight">CE-531X</span> (600V) hoặc <span class="highlight">SCUT6-X</span></li>
+<li>Tủ điện, tín hiệu thường → <span class="highlight">VCTF 23NX</span> hoặc <span class="highlight">KVC-36</span></li>
+<li>Ethernet nhà máy → <span class="highlight">KETH-ST</span> (mỏng nhất 5.2mm)</li>
+<li>CC-Link IE Field → <span class="highlight">FANC-IEF</span> series</li>
+<li>DeviceNet → <span class="highlight">KND-SB</span> THICK/THIN</li>
+<li>Môi trường hóa chất → <span class="highlight">KDF</span> (cách điện ETFE)</li>
+<li>Chống cháy lan FT4 → <span class="highlight">CE-36(BE)/LIS</span></li>
+<li>Dây đơn tủ điện → <span class="highlight">CE-KMTW</span></li>
+</ul>
+</div>
+<div class="summary-card">
+<h3>🔑 Quy tắc đặt tên KURAMO</h3>
+<ul>
+<li><span class="highlight">VCT</span> = Vinyl CabTyre (chuẩn Nhật)</li>
+<li><span class="highlight">SCUT</span> = Super Cut (đa chuẩn CE+UL)</li>
+<li><span class="highlight">CE-</span> = European (toàn cầu)</li>
+<li><span class="highlight">KETH</span> = Kuramo ETHernet</li>
+<li><span class="highlight">KRL</span> = Kuramo UL (Bắc Mỹ)</li>
+<li><span class="highlight">KDF</span> = Kuramo Double Fluorocarbon</li>
+<li><span class="highlight">X</span> = Export / đa tiêu chuẩn</li>
+<li><span class="highlight">SB</span> = Shield Braid (có chống nhiễu)</li>
+<li><span class="highlight">Z</span> = Di động / xích dẫn cáp</li>
+<li><span class="highlight">B</span> = Cường lực (strength member)</li>
+<li><span class="highlight">XX</span> = Siêu dẻo (extra flexible)</li>
+</ul>
+</div>
+<div class="summary-card">
+<h3>📐 Bán kính uốn cong</h3>
+<ul>
+<li>Lắp cố định: <span class="highlight">≥ 4×OD</span> (đường kính ngoài)</li>
+<li>Di động / xích cáp: <span class="highlight">≥ 7.5×OD</span></li>
+<li>OD ~ 5-20mm tùy số lõi &amp; tiết diện</li>
+<li>Cáp shield: OD lớn hơn ~1-3mm so với không shield</li>
+<li>Tham khảo datasheet PDF từng mã để có OD chính xác</li>
+</ul>
+</div>
+</div>
+</div>
+<script>
+var DATA=[
+{m:"SCUT6-X",t:"Cáp điều khiển đa tiêu chuẩn",v:"600V",tmp:"105°C",c:"2C-30C",app:"Máy móc công nghiệp, cố định & di động",std:"EN 50525-2-51; UL 758; AWM 2586",ins:"PVC chịu nhiệt",j:"PVC kháng dầu (Xám nhạt)",s:0,cat:"dieu-khien"},
+{m:"SCUT6-XS (Shield)",t:"Cáp điều khiển đa tiêu chuẩn",v:"600V",tmp:"105°C",c:"2C-30C",app:"Máy móc công nghiệp chống nhiễu",std:"EN 50525-2-51; UL 758; AWM 2586",ins:"PVC chịu nhiệt",j:"PVC kháng dầu + lưới đồng mạ thiếc",s:1,cat:"dieu-khien"},
+{m:"VCT 360",t:"Cáp điều khiển chịu dầu 600V",v:"600V",tmp:"60°C",c:"2C-30C",app:"Xích dẫn cáp, môi trường có dầu",std:"(PS)E (Nhật Bản)",ins:"PVC",j:"PVC kháng dầu (Đen)",s:0,cat:"dieu-khien"},
+{m:"VCT 360SB (Shield)",t:"Cáp điều khiển chịu dầu 600V",v:"600V",tmp:"60°C",c:"2C-30C",app:"Xích dẫn cáp chống nhiễu, môi trường có dầu",std:"(PS)E (Nhật Bản)",ins:"PVC",j:"PVC kháng dầu + lưới đồng",s:1,cat:"dieu-khien"},
+{m:"VCT 531Z",t:"Cáp điều khiển chịu nhiệt kháng dầu, uốn cực cao",v:"600V",tmp:"75°C",c:"2C-4C",app:"Xích dẫn cáp, máy di động liên tục",std:"(PS)E (Nhật Bản)",ins:"PVC chịu nhiệt",j:"PVC kháng dầu chịu nhiệt (Đen)",s:0,cat:"dieu-khien"},
+{m:"KETH-PSB Series",t:"Cáp Ethernet CN 2 cặp, chống nhiễu kép",v:"30V",tmp:"75°C",c:"22AWG × 2P",app:"Ethernet nhà máy nhiều nhiễu",std:"UL 444 (CM); AWM 20276; CSA",ins:"PE / XLPE",j:"PVC kháng dầu (Xanh lá/Vàng/Xanh nhạt/Đen)",s:1,cat:"ethernet"},
+{m:"KRL-36/LIS",t:"Cáp tín hiệu đa tiêu chuẩn Bắc Mỹ",v:"150V",tmp:"90°C",c:"2C-64C (1P-32P)",app:"Điều khiển & tín hiệu chuẩn NFPA 70/79",std:"UL 13 (CL3); UL 444 (CMG); CSA",ins:"PVC chịu nhiệt",j:"PVC kháng dầu chịu nhiệt (Đen)",s:0,cat:"tin-hieu"},
+{m:"KRL-36SB/LIS (Shield)",t:"Cáp tín hiệu đa tiêu chuẩn Bắc Mỹ",v:"150V",tmp:"90°C",c:"2C-64C (1P-32P)",app:"Điều khiển & tín hiệu chống nhiễu",std:"UL 13 (CL3); UL 444 (CMG); CSA",ins:"PVC chịu nhiệt",j:"PVC kháng dầu + lưới đồng",s:1,cat:"tin-hieu"},
+{m:"VCTF 43Z (Hypren)",t:"Cáp điều khiển robot đa tiêu chuẩn, lõi gia cường",v:"300V",tmp:"105°C",c:"2C-30C",app:"Robot, máy tự động, chuyển động liên tục",std:"UL AWM 2517; (PS)E (VCTF)",ins:"PVC chịu nhiệt",j:"PVC kháng dầu + lõi sợi gia cường",s:0,cat:"robot"},
+{m:"CE-531X",t:"Cáp điều khiển đa tiêu chuẩn toàn cầu",v:"600V",tmp:"90°C",c:"2C-40C",app:"Động cơ, cảm biến, máy xuất khẩu toàn cầu",std:"CE; UL/cUL; CCC; PSE; EAC",ins:"PVC chịu nhiệt",j:"PVC kháng dầu (Xám nhạt)",s:0,cat:"dieu-khien"},
+{m:"CE-531XSB (Shield)",t:"Cáp điều khiển đa tiêu chuẩn toàn cầu",v:"600V",tmp:"90°C",c:"2C-40C",app:"Động cơ, cảm biến chống nhiễu, xuất khẩu",std:"CE; UL/cUL; CCC; PSE; EAC",ins:"PVC chịu nhiệt",j:"PVC kháng dầu + lưới đồng",s:1,cat:"dieu-khien"},
+{m:"FANC-PW110SBH",t:"Cáp CC-Link tích hợp nguồn + tín hiệu",v:"300V",tmp:"75°C",c:"3C(20AWG) + 2C(0.75mm²)",app:"Mạng CC-Link, nguồn+tín hiệu 1 sợi",std:"UL; cUL; CE; CCC; PSE; EAC",ins:"PEF + PVC chịu nhiệt",j:"PVC kháng dầu chịu nhiệt",s:1,cat:"ethernet"},
+{m:"FANC-IEF-SB",t:"Cáp Ethernet CN Cat5e CC-Link IE Field (cố định)",v:"Cat5e",tmp:"75°C",c:"24AWG × 4P",app:"CC-Link IE Field, Ethernet CN lắp cố định",std:"UL; cUL; CE; CCC; PSE; EAC; Cat5e",ins:"PE",j:"PVC kháng dầu (Cam)",s:1,cat:"ethernet"},
+{m:"FANC-IEF-P",t:"Cáp Ethernet CN Cat5e CC-Link IE Field (dây bện)",v:"Cat5e",tmp:"75°C",c:"25AWG × 4P",app:"CC-Link IE Field, cần mềm dẻo hơn",std:"UL; cUL; CE; CCC; PSE; EAC; Cat5e",ins:"PE",j:"PVC kháng dầu (Ngà)",s:1,cat:"ethernet"},
+{m:"FANC-IEF-Z",t:"Cáp Ethernet CN Cat5e CC-Link IE Field (di động)",v:"Cat5e",tmp:"75°C",c:"26AWG × 4P",app:"CC-Link IE Field, xích dẫn cáp",std:"UL; cUL; CE; CCC; PSE; EAC; Cat5e",ins:"XLPE",j:"PVC kháng dầu (Đen)",s:1,cat:"ethernet"},
+{m:"KETH-ST",t:"Cáp Ethernet CN siêu mỏng Cat5e (cố định)",v:"Cat5e",tmp:"75°C",c:"28AWG × 4P",app:"Ethernet CN tiết kiệm không gian, OD 5.2mm",std:"UL 444 (CM); Cat5e",ins:"PE",j:"PVC kháng dầu chịu nhiệt",s:1,cat:"ethernet"},
+{m:"KETH-STZ",t:"Cáp Ethernet CN siêu mỏng Cat5e (di động)",v:"Cat5e",tmp:"80°C",c:"28AWG × 4P",app:"Ethernet CN trong xích dẫn cáp, OD 5.2mm",std:"UL 444 (CM); Cat5e",ins:"XLPE",j:"PVC kháng dầu chịu nhiệt",s:1,cat:"ethernet"},
+{m:"KVC-43BX",t:"Cáp tín hiệu mạch yếu có lõi gia cường",v:"<100V",tmp:"75°C",c:"2C-30C",app:"Tín hiệu cảm biến, mạch truyền thông, mạch yếu",std:"(PS)E (Nhật Bản)",ins:"PVC chịu nhiệt",j:"PVC kháng dầu + lõi gia cường",s:0,cat:"tin-hieu"},
+{m:"KVC-43BXS (Shield)",t:"Cáp tín hiệu mạch yếu có lõi gia cường",v:"<100V",tmp:"75°C",c:"2C-30C",app:"Tín hiệu cảm biến chống nhiễu",std:"(PS)E (Nhật Bản)",ins:"PVC chịu nhiệt",j:"PVC kháng dầu + lưới đồng",s:1,cat:"tin-hieu"},
+{m:"VCTF 23NX",t:"Cáp điều khiển linh hoạt 300V",v:"300V",tmp:"105°C",c:"2C-30C",app:"Tủ điện điều khiển, tín hiệu thiết bị CN",std:"UL AWM 2517; CSA; (PS)E",ins:"PVC chịu nhiệt",j:"PVC kháng dầu chịu nhiệt (Đen)",s:0,cat:"dieu-khien"},
+{m:"VCTF 23NXS (Shield)",t:"Cáp điều khiển linh hoạt 300V",v:"300V",tmp:"105°C",c:"2C-30C",app:"Tủ điện chống nhiễu, môi trường nhiễu điện từ",std:"UL AWM 2517; CSA; (PS)E",ins:"PVC chịu nhiệt",j:"PVC kháng dầu + lưới đồng",s:1,cat:"dieu-khien"},
+{m:"KDF",t:"Cáp tín hiệu xoắn đôi cách điện ETFE",v:"300V",tmp:"105°C",c:"1P-25P/30P",app:"Tín hiệu & truyền thông, môi trường hóa chất",std:"CE; UL 444 (CM); AWM 2103/2517; CCC; PSE; EAC",ins:"ETFE (fluorocarbon)",j:"PVC kháng dầu chịu nhiệt",s:0,cat:"tin-hieu"},
+{m:"KDF-SB (Shield)",t:"Cáp tín hiệu xoắn đôi cách điện ETFE",v:"300V",tmp:"105°C",c:"1P-25P/30P",app:"Tín hiệu chống nhiễu, môi trường hóa chất",std:"CE; UL 444 (CM); AWM 2103/2517; CCC; PSE; EAC",ins:"ETFE (fluorocarbon)",j:"PVC kháng dầu + lưới đồng",s:1,cat:"tin-hieu"},
+{m:"VCT 531BX",t:"Cáp FA dây bện có cường lực 600V",v:"600V",tmp:"75°C",c:"2C-40C",app:"Xích dẫn cáp, robot, máy công cụ, tự động hóa",std:"JIS; UL AWM; cUL/CSA; NFPA; CCC; CE; GOST-R",ins:"PVC chịu nhiệt",j:"PVC kháng dầu (Đen, vỏ mờ)",s:0,cat:"robot"},
+{m:"VCT 531BXS (Shield)",t:"Cáp FA dây bện có cường lực 600V",v:"600V",tmp:"75°C",c:"2C-40C",app:"Robot chống nhiễu, tự động hóa",std:"JIS; UL AWM; cUL/CSA; NFPA; CCC; CE; GOST-R",ins:"PVC chịu nhiệt",j:"PVC kháng dầu + lưới đồng",s:1,cat:"robot"},
+{m:"KST-UL21795",t:"Cáp tín hiệu xoắn đôi UL 21795",v:"150V",tmp:"105°C",c:"1P-20P",app:"Tín hiệu & truyền thông, vỏ trơn dễ kéo",std:"UL AWM 21795; CSA",ins:"PVC",j:"PVC trơn slippery",s:0,cat:"tin-hieu"},
+{m:"KST-SB-UL21795 (Shield)",t:"Cáp tín hiệu xoắn đôi UL 21795",v:"150V",tmp:"105°C",c:"1P-20P",app:"Tín hiệu chống nhiễu, vỏ trơn dễ kéo",std:"UL AWM 21795; CSA",ins:"PVC",j:"PVC trơn + lưới đồng",s:1,cat:"tin-hieu"},
+{m:"CE-531NZ",t:"Cáp đa tiêu chuẩn toàn cầu dây composite",v:"600V",tmp:"90°C",c:"2C-40C",app:"Ứng dụng động, xích dẫn cáp, robot",std:"CE; UL AWM 2587; CSA; CCC; PSE; EAC",ins:"PVC chịu nhiệt",j:"PVC kháng dầu (Xám nhạt)",s:0,cat:"robot"},
+{m:"CE-531NZSB (Shield)",t:"Cáp đa tiêu chuẩn toàn cầu dây composite",v:"600V",tmp:"90°C",c:"2C-40C",app:"Ứng dụng động chống nhiễu, robot",std:"CE; UL AWM 2587; CSA; CCC; PSE; EAC",ins:"PVC chịu nhiệt",j:"PVC kháng dầu + lưới đồng",s:1,cat:"robot"},
+{m:"KND-SB THICK",t:"Cáp DeviceNet ODVA (THICK, cố định)",v:"600V",tmp:"80°C",c:"18AWGx1P + 15AWGx1P",app:"Mạng DeviceNet, lắp cố định theo ODVA",std:"UL 13 (PLTC/CL3); AWM 2464; CSA; CE; CCC; PSE; EAC",ins:"PEF + PVC chịu nhiệt",j:"PVC kháng dầu chịu nhiệt",s:1,cat:"ethernet"},
+{m:"KND-SB THIN",t:"Cáp DeviceNet ODVA (THIN, cố định)",v:"300V",tmp:"75°C",c:"24AWGx1P + 22AWGx1P",app:"Mạng DeviceNet, không gian hẹp",std:"UL 13 (PLTC/CL3); AWM 2464; CSA; CE; CCC; PSE; EAC",ins:"PEF + PVC chịu nhiệt",j:"PVC kháng dầu chịu nhiệt",s:1,cat:"ethernet"},
+{m:"KND-SBZ THIN",t:"Cáp DeviceNet ODVA (THIN, di động)",v:"300V",tmp:"75°C",c:"24AWGx1P + 22AWGx1P",app:"Mạng DeviceNet, xích dẫn cáp",std:"UL 13 (PLTC/CL3); AWM 2464; CSA; CE; CCC; PSE; EAC",ins:"PEF + PVC chịu nhiệt",j:"PVC kháng dầu chịu nhiệt",s:1,cat:"ethernet"},
+{m:"KVC-36",t:"Cáp tín hiệu mạch yếu UL AWM",v:"300V",tmp:"90°C",c:"2C-40C",app:"Tín hiệu & truyền thông chuẩn UL",std:"UL AWM 2936/2576/2937/2938; CSA",ins:"PVC chịu nhiệt",j:"PVC kháng dầu chịu nhiệt (Đen)",s:0,cat:"tin-hieu"},
+{m:"KVC-36SB (Shield)",t:"Cáp tín hiệu mạch yếu UL AWM",v:"300V",tmp:"90°C",c:"2C-40C",app:"Tín hiệu chống nhiễu chuẩn UL",std:"UL AWM 2936/2576/2937/2938; CSA",ins:"PVC chịu nhiệt",j:"PVC kháng dầu + lưới đồng",s:1,cat:"tin-hieu"},
+{m:"CE-36(BE)/LIS",t:"Cáp tín hiệu chống cháy lan FT4 300V",v:"300V",tmp:"90°C",c:"2C-30C",app:"Hệ thống điều khiển, máng cáp đứng, chống cháy lan",std:"CE; UL 13 (CL3); AWM 2464; CSA",ins:"PVC chịu nhiệt",j:"PVC kháng dầu chịu nhiệt (Xám)",s:0,cat:"tin-hieu"},
+{m:"CE-KMTW",t:"Cáp đa năng MTW/THW/AWM toàn cầu 600V",v:"600V",tmp:"90°C",c:"1C",app:"Tủ điện, máy công cụ, điện CN chuẩn Bắc Mỹ+EU",std:"CE; UL 1063/UL 83 (MTW/THW); CSA; PSE (HKIV)",ins:"PVC chịu nhiệt",j:"Không có (single insulation)",s:0,cat:"dieu-khien"},
+{m:"VCTF 12",t:"Cáp điều khiển mềm dẻo cơ bản 300V",v:"300V",tmp:"60°C",c:"2C-4C",app:"Điều khiển, tín hiệu thông thường, lắp cố định",std:"(PS)E (Nhật Bản)",ins:"PVC",j:"PVC mềm (Xám)",s:0,cat:"dieu-khien"},
+{m:"VCT 531XX",t:"Cáp FA siêu dẻo chịu dầu 600V",v:"600V",tmp:"105°C",c:"2C-40C",app:"Robot, xích cáp, máy công cụ, chuyển động tốc độ cao",std:"UL AWM; (PS)E (Nhật Bản)",ins:"PVC chịu nhiệt",j:"PVC kháng dầu chịu nhiệt (Đen)",s:0,cat:"robot"}
+];
+function voltBadge(v){
+if(v==='600V')return '<span class="badge badge-600">600V</span>';
+if(v==='300V')return '<span class="badge badge-300">300V</span>';
+if(v==='150V')return '<span class="badge badge-150">150V</span>';
+if(v==='<100V')return '<span class="badge badge-100">&lt;100V</span>';
+if(v==='30V')return '<span class="badge badge-30">30V</span>';
+if(v==='Cat5e')return '<span class="badge badge-eth">Cat5e</span>';
+return '<span class="badge badge-single">'+v+'</span>';
+}
+function shieldBadge(s){return s?'<span class="badge badge-shield">Shield</span>':'<span class="badge badge-noshield">Không shield</span>';}
+function tempBadge(t){var c='badge-temp';if(t.indexOf('105')>=0)c='badge badge-600';else if(t.indexOf('90')>=0)c='badge badge-300';else if(t.indexOf('80')>=0)c='badge badge-150';return '<span class="'+c+'">'+t+'</span>';}
+function renderTable(data){
+var h='';for(var i=0;i<data.length;i++){var r=data[i];
+h+='<tr data-voltage="'+r.v+'" data-shield="'+r.s+'" data-temp="'+r.tmp+'" data-cat="'+r.cat+'">';
+h+='<td>'+(i+1)+'</td><td><span class="highlight">'+r.m+'</span></td><td><span class="cell-desc">'+r.t+'</span></td>';
+h+='<td>'+voltBadge(r.v)+'</td><td>'+tempBadge(r.tmp)+'</td><td>'+r.c+'</td>';
+h+='<td><span class="cell-desc">'+r.app+'</span></td><td><span class="muted">'+r.std+'</span></td>';
+h+='<td>'+r.ins+'</td><td><span class="cell-desc">'+r.j+'</span> '+shieldBadge(r.s)+'</td></tr>';
+}
+document.getElementById('table-body').innerHTML=h;
+var sc=0;for(var j=0;j<data.length;j++){if(data[j].s)sc++;}
+var vo={};for(var k=0;k<data.length;k++){vo[data[k].v]=1;}
+document.getElementById('stats').innerHTML=
+'<div class="stat-card"><div class="num">'+data.length+'</div><div class="lbl">Sản phẩm hiển thị</div></div>'+
+'<div class="stat-card"><div class="num">'+sc+'</div><div class="lbl">Có Shield</div></div>'+
+'<div class="stat-card"><div class="num">'+(data.length-sc)+'</div><div class="lbl">Không Shield</div></div>'+
+'<div class="stat-card"><div class="num">'+Object.keys(vo).length+'</div><div class="lbl">Mức điện áp</div></div>';
+}
+var activeFilter='all';
+function applyFilter(){
+var s=document.getElementById('search').value.toLowerCase();
+var rows=document.querySelectorAll('#table-body tr');
+var vis=0;
+for(var i=0;i<rows.length;i++){
+var row=rows[i],v=row.dataset.voltage,sh=row.dataset.shield,tmp=row.dataset.temp,cat=row.dataset.cat;
+var txt=row.textContent.toLowerCase(),show=true;
+if(activeFilter==='600V')show=v==='600V';
+else if(activeFilter==='300V')show=v==='300V';
+else if(activeFilter==='150V')show=v==='150V'||v==='<100V';
+else if(activeFilter==='Cat5e')show=v==='Cat5e'||v==='30V'||cat==='ethernet';
+else if(activeFilter==='shield')show=sh==='1';
+else if(activeFilter==='noshield')show=sh==='0';
+else if(activeFilter==='105C')show=tmp.indexOf('105')>=0;
+else if(activeFilter==='90C')show=tmp.indexOf('90')>=0;
+else if(activeFilter==='dieu-khien')show=cat==='dieu-khien';
+else if(activeFilter==='tin-hieu')show=cat==='tin-hieu';
+else if(activeFilter==='ethernet')show=cat==='ethernet';
+else if(activeFilter==='robot')show=cat==='robot';
+if(s&&txt.indexOf(s)<0)show=false;
+if(show){row.classList.remove('hidden');vis++;}
+else row.classList.add('hidden');
+}
+document.querySelector('#stats .stat-card:first-child .num').textContent=vis;
+}
+document.getElementById('search').addEventListener('input',applyFilter);
+var btns=document.querySelectorAll('.filter-btn');
+for(var i=0;i<btns.length;i++){btns[i].addEventListener('click',function(){
+for(var j=0;j<btns.length;j++)btns[j].classList.remove('active');
+this.classList.add('active');activeFilter=this.dataset.filter;applyFilter();
+});}
+document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&e.key==='f'){e.preventDefault();document.getElementById('search').focus();}});
+renderTable(DATA);
+</script>
+</body>
+</html>

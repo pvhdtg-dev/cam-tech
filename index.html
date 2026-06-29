@@ -36,58 +36,112 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
-/* LOGIN */
+/* ── LOGIN (Premium) ── */
 .login-overlay {
   position: fixed; inset: 0;
-  background: linear-gradient(135deg, #0a0a15 0%, #0f0f1a 50%, #1a1a2e 100%);
+  background: rgba(0,0,0,0.88);
   z-index: 9999;
   display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(16px);
+}
+.login-main-container {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center;
+  width: 100%; max-width: 460px; padding: 20px;
+}
+.login-bg-particles {
+  position: absolute; inset: 0; z-index: 0; overflow: hidden;
+}
+.login-particle {
+  position: absolute; background: rgba(234,179,8,0.12); border-radius: 50%;
+  animation: loginFloat 20s infinite ease-in-out;
+}
+.login-particle:nth-child(1){width:4px;height:4px;top:20%;left:10%;animation-delay:0s}
+.login-particle:nth-child(2){width:6px;height:6px;top:60%;right:15%;animation-delay:5s}
+.login-particle:nth-child(3){width:3px;height:3px;top:80%;left:30%;animation-delay:10s}
+.login-particle:nth-child(4){width:5px;height:5px;top:30%;right:25%;animation-delay:15s}
+@keyframes loginFloat {
+  0%,100%{transform:translateY(0) translateX(0);opacity:.3}
+  25%{transform:translateY(-30px) translateX(10px);opacity:.8}
+  50%{transform:translateY(-10px) translateX(-10px);opacity:.5}
+  75%{transform:translateY(-40px) translateX(5px);opacity:.6}
 }
 .login-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 40px;
-  width: 100%; max-width: 400px;
+  position: relative; z-index: 1;
+  background: rgba(30,41,59,0.75);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 24px;
+  padding: 44px 40px;
+  width: 100%; max-width: 420px;
   text-align: center;
-  box-shadow: 0 8px 48px rgba(0,0,0,0.5);
-  animation: modalIn 0.3s ease;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05) inset;
+  
 }
-.login-logo {
-  width: 60px; height: 60px;
-  background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
-  border-radius: 14px;
-  display: inline-flex; align-items: center; justify-content: center;
-  font-size: 1.8rem; color: #1a1a2e; font-weight: 800;
-  margin-bottom: 16px;
+@keyframes loginFadeUp {from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.login-logo-wrap {
+  text-align: center; margin-bottom: 20px;
 }
-.login-title { font-size: 1.3rem; font-weight: 700; color: var(--gold-light); margin-bottom: 4px; }
-.login-subtitle { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 24px; }
+.login-logo-wrap img {
+  height: 50px; width: auto;
+  display: inline-block;
+  padding: 10px 18px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+.login-title { font-size: 1.5rem; font-weight: 700; color: #eab308; line-height: 1.3; margin-bottom: 4px; }
+.login-subtitle { font-size: 0.85rem; color: #94a3b8; margin-bottom: 6px; }
+.login-hint { font-size: 0.82rem; color: #64748b; margin-bottom: 22px; }
 .login-input {
-  width: 100%; padding: 14px 16px;
-  background: var(--bg-primary); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); color: var(--text-primary);
-  font-family: inherit; font-size: 1rem; text-align: center;
-  margin-bottom: 16px; transition: var(--transition); letter-spacing: 2px;
+  width: 100%; padding: 15px 20px;
+  background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px; color: #e2e8f0;
+  font-family: inherit; font-size: 1.05rem; text-align: center;
+  letter-spacing: 4px; margin-bottom: 18px; transition: all 0.3s ease; outline: none;
 }
+.login-input::placeholder { color: #475569; letter-spacing: 6px; }
 .login-input:focus {
-  outline: none; border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(212,160,23,0.15);
+  border-color: rgba(234,179,8,0.5);
+  box-shadow: 0 0 0 3px rgba(234,179,8,0.1), 0 0 20px rgba(234,179,8,0.05);
+  background: rgba(15,23,42,0.85);
 }
-.login-input::placeholder { color: var(--text-muted); letter-spacing: 0; }
+@keyframes loginShake {0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
 .login-btn {
-  width: 100%; padding: 14px;
-  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
-  border: none; color: #1a1a2e;
-  font-family: inherit; font-weight: 700; font-size: 1rem;
-  border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition);
+  width: 100%; padding: 15px 24px;
+  background: linear-gradient(135deg,#ca8a04 0%,#eab308 100%);
+  border: none; border-radius: 14px;
+  color: #0f172a; font-size: 1rem; font-weight: 600;
+  font-family: inherit; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(234,179,8,0.3);
+  position: relative; overflow: hidden;
 }
-.login-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(212,160,23,0.3); }
-.login-error { color: var(--danger); font-size: 0.82rem; margin-top: 12px; display: none; }
-.login-error.show { display: block; animation: shake 0.4s ease; }
-@keyframes shake {
-  0%,100% { transform: translateX(0); }
-  20%,60% { transform: translateX(-6px); }
+.login-btn::before {
+  content: ""; position: absolute; top:0; left:-100%;
+  width:100%; height:100%;
+  background: linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);
+  transition: left 0.5s;
+}
+.login-btn:hover::before {left:100%}
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(234,179,8,0.4);
+  background: linear-gradient(135deg,#eab308 0%,#facc15 100%);
+}
+.login-btn:active {transform: translateY(0)}
+.login-btn.loading { pointer-events: none; opacity: 0.85; }
+.login-error { color: #ef4444; font-size: 0.82rem; margin-top: 14px; display: none; }
+.login-company { color: #e2e8f0; font-size: 1rem; font-weight: 500; margin-bottom: 2px; }
+.login-contact {
+  color: #94a3b8; font-size: 0.8rem; margin-bottom: 18px;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+}
+.login-contact svg { color: #eab308; flex-shrink: 0; }
+.login-contact a { color: #eab308; text-decoration: none; font-weight: 500; }
+.login-contact a:hover { color: #facc15; text-decoration: underline; }
+}
   40%,80% { transform: translateX(6px); }
 }
 #mainApp { display: none; }
@@ -103,7 +157,13 @@ body {
   display: flex; align-items: center; justify-content: space-between;
   gap: 24px; flex-wrap: wrap;
 }
-.logo { display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 800; color: var(--gold); white-space: nowrap; }
+.logo { display: flex; align-items: center; gap: 12px; font-size: 1.4rem; font-weight: 800; color: var(--gold); white-space: nowrap; }
+.logo-img {
+  height: 34px; width: auto;
+  padding: 4px 10px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 8px;
+}
 .logo-icon {
   width: 42px; height: 42px;
   background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
@@ -388,20 +448,39 @@ body {
 <body>
 <!-- LOGIN OVERLAY -->
 <div class="login-overlay" id="loginOverlay">
-  <div class="login-card">
-    <div class="login-logo">⚡</div>
-    <div class="login-title">TAIYO · KURAMO Cable Manager</div>
-    <div class="login-subtitle">Vui lòng nhập mật khẩu để truy cập</div>
-    <input type="password" class="login-input" id="loginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPassword()">
-    <button class="login-btn" onclick="checkPassword()">🔓 Đăng nhập</button>
-    <div class="login-error" id="loginError">❌ Mật khẩu không đúng. Vui lòng thử lại.</div>
+  <div class="login-bg-particles">
+    <div class="login-particle"></div>
+    <div class="login-particle"></div>
+    <div class="login-particle"></div>
+    <div class="login-particle"></div>
+  </div>
+  <div class="login-main-container">
+    <div class="login-card">
+      <div class="login-company">Công Ty TNHH Camtech</div>
+      <div class="login-contact">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
+        <a href="tel:0921066661">0921 066 661</a>
+      </div>
+      <div class="login-logo-wrap">
+        <img src="logo.png" alt="CamTech Logo">
+      </div>
+      <div class="login-title">TAIYO · KURAMO Cable Manager</div>
+      <div class="login-subtitle">Hệ thống quản lý cáp công nghiệp</div>
+      <div class="login-hint">Vui lòng nhập mật khẩu để truy cập</div>
+      <input type="password" class="login-input" id="loginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPassword()">
+      <button class="login-btn" onclick="checkPassword()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+        Đăng nhập
+      </button>
+      <div class="login-error" id="loginError">❌ Mật khẩu không đúng. Vui lòng thử lại.</div>
+    </div>
   </div>
 </div>
 <!-- MAIN APP -->
 <div id="mainApp">
 <header class="header">
   <div class="header-inner">
-    <div class="logo"><div class="logo-icon">⚡</div><span>TAIYO · KURAMO Cable</span></div>
+    <div class="logo"><img src="logo.png" alt="CamTech" class="logo-img"><span>TAIYO · KURAMO Cable</span></div>
     <div class="brand-tabs" id="brandTabs">
       <button class="brand-tab active" data-brand="all" onclick="setBrandTab('all')">Tất cả</button>
       <button class="brand-tab" data-brand="TAIYO" onclick="setBrandTab('TAIYO')">TAIYO</button>
@@ -466,15 +545,33 @@ const SESSION_KEY = "taiyo_auth";
 function checkPassword() {
   const input = document.getElementById("loginPassword");
   const error = document.getElementById("loginError");
-  if (input.value === AUTH_PASSWORD) {
-    sessionStorage.setItem(SESSION_KEY, "true");
-    unlockApp();
-  } else {
-    error.classList.add("show");
-    input.value = "";
-    input.focus();
-    setTimeout(function() { error.classList.remove("show"); }, 2000);
+  const btn = document.querySelector('.login-btn');
+
+  if (!input.value) {
+    input.style.animation = 'none'; input.offsetHeight;
+    input.style.animation = 'loginShake 0.5s ease';
+    setTimeout(function() { input.style.animation = ''; }, 500);
+    return;
   }
+
+  btn.classList.add('loading');
+  btn.innerHTML = 'Đang xác thực...';
+
+  setTimeout(function() {
+    if (input.value === AUTH_PASSWORD) {
+      sessionStorage.setItem(SESSION_KEY, "true");
+      unlockApp();
+    } else {
+      error.style.display = 'block';
+      input.value = "";
+      input.focus();
+      input.style.animation = 'none'; input.offsetHeight;
+      input.style.animation = 'loginShake 0.5s ease';
+      setTimeout(function() { input.style.animation = ''; error.style.display = 'none'; }, 2500);
+    }
+    btn.classList.remove('loading');
+    btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg> Đăng nhập';
+  }, 800);
 }
 
 function unlockApp() {
@@ -508,8 +605,6 @@ const products = [
   {id:15,brand:"KURAMO",model:"KRL-36/LIS",modelDisplay:"KRL-36/LIS",type:"Cáp tín hiệu đa tiêu chuẩn Bắc Mỹ (không bọc)",typeShort:"Signal Cable",voltage:"150V",temperature:"90°C",application:"Hệ thống điều khiển và tín hiệu công nghiệp theo tiêu chuẩn NFPA 70/79",appShort:"Tín hiệu Bắc Mỹ",description:"Cáp tín hiệu đa tiêu chuẩn, thiết kế xoắn đôi (twisted pair) giảm nhiễu chéo. Tuân thủ NFPA 70/79, UL 13/444. PVC chịu nhiệt, kháng dầu, chống cháy FT4/VW-1. Cỡ 24AWG-20AWG, tối đa 32 cặp.",standard:"UL 13 (CL3); UL 444 (CMG); UL 758 (AWM); CSA C22.2 No.214; CSA C22.2 No.210",insulation:"PVC chịu nhiệt",jacket:"PVC kháng dầu và chịu nhiệt (Đen)",conductorCount:"2C-64C (1P-32P)",drainWire:"Không (non-shield)",ratings:{heat:7,oil:6,noise:4,flame:7,torsion:0,flex:5,dragChain:"★★★"},rohs:"Có",standardLength:"100m",insulationResistance:"> 10 MΩ·km@20°C",dielectricStrength:"AC 2000V/1min",surfaceMark:"UL 13 CL3 90°C UL 444 CMG 90°C AWM 80°C 150V VW-1 FT1 FT4 LF",pdf:"krl_36lis_krl_36sblis.pdf",awgVariants:[{awg:"24",structure:"Cu ủ mịn twisted pair",insulDia:"—",totalDia:"3.9",weight:"—",current:"7",resistance:"—"},{awg:"23",structure:"Cu ủ mịn twisted pair",insulDia:"—",totalDia:"4.5",weight:"—",current:"6",resistance:"—"},{awg:"20",structure:"Cu ủ mịn twisted pair",insulDia:"—",totalDia:"5.5",weight:"—",current:"8",resistance:"—"}],certs:{UL:"✓ (UL 13 CL3, UL 444 CMG, AWM)",cUL:"✓ (CSA C22.2)",CE:"✕",MTW_TC:"✕",JIS:"✕"}},
   {id:16,brand:"KURAMO",model:"KRL-36SB/LIS",modelDisplay:"KRL-36SB/LIS (Shield)",type:"Cáp tín hiệu đa tiêu chuẩn Bắc Mỹ (có bọc chống nhiễu)",typeShort:"Shielded Signal",voltage:"150V",temperature:"90°C",application:"Hệ thống điều khiển và tín hiệu công nghiệp chống nhiễu theo NFPA 70/79",appShort:"Tín hiệu chống nhiễu",description:"Phiên bản có shield của KRL-36/LIS. Bổ sung lưới đồng mạ thiếc chống nhiễu. Thiết kế xoắn đôi, tuân thủ NFPA 70/79. Chống cháy FT4, chịu nhiệt 90°C.",standard:"UL 13 (CL3); UL 444 (CMG); UL 758 (AWM); CSA C22.2 No.214; CSA C22.2 No.210",insulation:"PVC chịu nhiệt",jacket:"PVC kháng dầu và chịu nhiệt (Đen) + lưới đồng mạ thiếc",conductorCount:"2C-64C (1P-32P)",drainWire:"Có (lưới đồng mạ thiếc braid shield)",ratings:{heat:7,oil:6,noise:7,flame:7,torsion:0,flex:5,dragChain:"★★★"},rohs:"Có",standardLength:"100m",insulationResistance:"> 10 MΩ·km@20°C",dielectricStrength:"AC 2000V/1min",surfaceMark:"UL 13 CL3 90°C UL 444 CMG 90°C AWM 80°C 150V VW-1 FT1 FT4 LF",pdf:"krl_36lis_krl_36sblis.pdf",awgVariants:[{awg:"24",structure:"Cu ủ mịn twisted pair + shield",insulDia:"—",totalDia:"4.7",weight:"—",current:"7",resistance:"—"},{awg:"23",structure:"Cu ủ mịn twisted pair + shield",insulDia:"—",totalDia:"5.3",weight:"—",current:"6",resistance:"—"},{awg:"20",structure:"Cu ủ mịn twisted pair + shield",insulDia:"—",totalDia:"6.3",weight:"—",current:"8",resistance:"—"}],certs:{UL:"✓ (UL 13 CL3, UL 444 CMG, AWM)",cUL:"✓ (CSA C22.2)",CE:"✕",MTW_TC:"✕",JIS:"✕"}},
   {id:17,brand:"KURAMO",model:"VCTF43Z",modelDisplay:"VCTF 43Z (Hypren)",type:"Cáp điều khiển robot đa tiêu chuẩn, lõi gia cường",typeShort:"Robot Cable",voltage:"300V",temperature:"105°C",application:"Xích dẫn cáp cho robot và máy móc tự động, chuyển động liên tục",appShort:"Robot tự động hóa",description:"Dòng cáp điều khiển độ linh hoạt rất cao (Hypren). Ruột dẫn bện kiểu dây thừng kết hợp lõi sợi gia cường trung tâm. Đa tiêu chuẩn: UL/cUL (AWM 2517) + PSE (VCTF). Chịu nhiệt 105°C, kháng dầu, chống cháy VW-1.",standard:"UL 758 / CSA C22.2 No.210 (AWM Style 2517); Luật An toàn Thiết bị và Vật liệu Điện (PS)E (VCTF)",insulation:"PVC chịu nhiệt",jacket:"PVC kháng dầu và chịu nhiệt (Đen), lõi sợi gia cường trung tâm",conductorCount:"2C-30C",drainWire:"Không",ratings:{heat:7,oil:7,noise:2,flame:6,torsion:0,flex:7,dragChain:"★★★★★★"},rohs:"Có",standardLength:"100m",insulationResistance:"> 10 MΩ·km@20°C",dielectricStrength:"AC 2000V/1min",surfaceMark:"AWM 2517 105°C 300V VW-1 VCTF 300V (PS)E KURAMO LF",pdf:"vctf43z.pdf",awgVariants:[{awg:"20",structure:"Cu rope-lay + lõi gia cường",insulDia:"—",totalDia:"7.0",weight:"—",current:"8",resistance:"—"},{awg:"18",structure:"Cu rope-lay + lõi gia cường",insulDia:"—",totalDia:"8.0",weight:"—",current:"12",resistance:"—"},{awg:"16",structure:"Cu rope-lay + lõi gia cường",insulDia:"—",totalDia:"9.5",weight:"—",current:"16",resistance:"—"},{awg:"14",structure:"Cu rope-lay + lõi gia cường",insulDia:"—",totalDia:"11.0",weight:"—",current:"22",resistance:"—"}],certs:{UL:"✓ (AWM 2517)",cUL:"✓ (CSA C22.2 No.210)",CE:"✕",MTW_TC:"✕",JIS:"✓ (PS-E VCTF)"}},
-
-
   {id:18,brand:"KURAMO",model:"CE-531X",modelDisplay:"CE-531X",type:"Cáp điều khiển đa tiêu chuẩn toàn cầu (không bọc)",typeShort:"Global Control",voltage:"600V",temperature:"90°C",application:"Điều khiển động cơ, cảm biến, máy móc xuất khẩu toàn cầu",appShort:"Đa chuẩn toàn cầu",description:"Cáp đa tiêu chuẩn toàn cầu: CE, UL/cUL, CCC, PSE, EAC. Ruột đồng ủ mềm bện, PVC chịu nhiệt, vỏ xám nhạt kháng dầu. Bán kính uốn: 4×OD (cố định), 7.5×OD (di động). Phạm vi nhiệt độ: -30°C đến 90°C.",standard:"EN 50525-2-51 (CE); UL 758 / CSA C22.2 No.210 (UL/cUL); CCC; (PS)E; EAC",insulation:"PVC chịu nhiệt",jacket:"PVC kháng dầu và chịu nhiệt (Xám nhạt)",conductorCount:"2C-40C",drainWire:"Không (non-shield)",ratings:{heat:6,oil:7,noise:2,flame:5,torsion:5,flex:7,dragChain:"★★★★★"},rohs:"Có",standardLength:"100m",insulationResistance:"> 10 MΩ·km@20°C",dielectricStrength:"AC 2000V/1min",surfaceMark:"CE-531X EN 50525-2-51 AWM 2587 600V 90°C VW-1 FT1",pdf:"ce-531xx_ce-531xxsbol1-01.pdf",awgVariants:[{awg:"0.5mm² 2C",structure:"48/0.12",insulDia:"2.2",totalDia:"6.2",weight:"55",current:"10",resistance:"—"},{awg:"0.5mm² 3C",structure:"48/0.12",insulDia:"2.2",totalDia:"6.5",weight:"60",current:"9",resistance:"—"},{awg:"0.5mm² 4C",structure:"48/0.12",insulDia:"2.2",totalDia:"7.1",weight:"70",current:"8",resistance:"—"},{awg:"0.5mm² 7C",structure:"48/0.12",insulDia:"2.2",totalDia:"9.6",weight:"110",current:"7",resistance:"—"},{awg:"0.5mm² 12C",structure:"48/0.12",insulDia:"2.2",totalDia:"11.5",weight:"175",current:"6",resistance:"—"},{awg:"0.5mm² 20C",structure:"48/0.12",insulDia:"2.2",totalDia:"15.0",weight:"290",current:"5",resistance:"—"},{awg:"0.5mm² 31C",structure:"48/0.12",insulDia:"2.2",totalDia:"17.5",weight:"410",current:"4",resistance:"—"},{awg:"0.75mm² 2C",structure:"67/0.12",insulDia:"2.35",totalDia:"6.7",weight:"65",current:"13",resistance:"—"},{awg:"0.75mm² 3C",structure:"67/0.12",insulDia:"2.35",totalDia:"7.1",weight:"75",current:"11",resistance:"—"},{awg:"0.75mm² 4C",structure:"67/0.12",insulDia:"2.35",totalDia:"7.7",weight:"90",current:"10",resistance:"—"},{awg:"0.75mm² 7C",structure:"67/0.12",insulDia:"2.35",totalDia:"10.0",weight:"135",current:"9",resistance:"—"},{awg:"0.75mm² 12C",structure:"67/0.12",insulDia:"2.35",totalDia:"12.5",weight:"205",current:"7",resistance:"—"},{awg:"0.75mm² 20C",structure:"67/0.12",insulDia:"2.35",totalDia:"16.5",weight:"355",current:"6",resistance:"—"},{awg:"0.75mm² 31C",structure:"67/0.12",insulDia:"2.35",totalDia:"18.5",weight:"500",current:"5",resistance:"—"}],certs:{UL:"✓ (AWM 2587)",cUL:"✓ (CSA C22.2 No.210)",CE:"✓ (EN 50525-2-51)",MTW_TC:"✕",JIS:"✓ (PS-E)"}},
   {id:19,brand:"KURAMO",model:"CE-531XSB",modelDisplay:"CE-531XSB (Shield)",type:"Cáp điều khiển đa tiêu chuẩn toàn cầu (có bọc chống nhiễu)",typeShort:"Shielded Global",voltage:"600V",temperature:"90°C",application:"Điều khiển động cơ, cảm biến cần chống nhiễu, máy móc xuất khẩu toàn cầu",appShort:"Đa chuẩn chống nhiễu",description:"Phiên bản có shield của CE-531X. Bổ sung lưới đồng mạ thiếc, trở kháng truyền dẫn <250mΩ/m@30MHz. Đa tiêu chuẩn: CE, UL/cUL, CCC, PSE, EAC. Phạm vi nhiệt độ: -30°C đến 90°C.",standard:"EN 50525-2-51 (CE); UL 758 / CSA C22.2 No.210 (UL/cUL); CCC; (PS)E; EAC",insulation:"PVC chịu nhiệt",jacket:"PVC kháng dầu và chịu nhiệt (Xám nhạt) + lưới đồng mạ thiếc",conductorCount:"2C-40C",drainWire:"Có (lưới đồng mạ thiếc, <250mΩ/m@30MHz)",ratings:{heat:6,oil:7,noise:7,flame:5,torsion:5,flex:7,dragChain:"★★★★★"},rohs:"Có",standardLength:"100m",insulationResistance:"> 10 MΩ·km@20°C",dielectricStrength:"AC 2000V/1min",surfaceMark:"CE-531XSB EN 50525-2-51 AWM 2587 600V 90°C VW-1 FT1",pdf:"ce-531xx_ce-531xxsbol1-01.pdf",awgVariants:[{awg:"0.5mm² 2C",structure:"48/0.12+shield",insulDia:"2.2",totalDia:"8.5",weight:"110",current:"10",resistance:"—"},{awg:"0.5mm² 3C",structure:"48/0.12+shield",insulDia:"2.2",totalDia:"8.8",weight:"120",current:"9",resistance:"—"},{awg:"0.5mm² 4C",structure:"48/0.12+shield",insulDia:"2.2",totalDia:"9.4",weight:"130",current:"8",resistance:"—"},{awg:"0.5mm² 7C",structure:"48/0.12+shield",insulDia:"2.2",totalDia:"12.0",weight:"205",current:"7",resistance:"—"},{awg:"0.5mm² 12C",structure:"48/0.12+shield",insulDia:"2.2",totalDia:"14.5",weight:"300",current:"6",resistance:"—"},{awg:"0.5mm² 20C",structure:"48/0.12+shield",insulDia:"2.2",totalDia:"17.5",weight:"425",current:"5",resistance:"—"},{awg:"0.75mm² 2C",structure:"67/0.12+shield",insulDia:"2.35",totalDia:"8.8",weight:"115",current:"13",resistance:"—"},{awg:"0.75mm² 3C",structure:"67/0.12+shield",insulDia:"2.35",totalDia:"9.2",weight:"130",current:"11",resistance:"—"},{awg:"0.75mm² 4C",structure:"67/0.12+shield",insulDia:"2.35",totalDia:"10.0",weight:"150",current:"10",resistance:"—"},{awg:"0.75mm² 7C",structure:"67/0.12+shield",insulDia:"2.35",totalDia:"12.5",weight:"220",current:"9",resistance:"—"},{awg:"0.75mm² 12C",structure:"67/0.12+shield",insulDia:"2.35",totalDia:"15.5",weight:"350",current:"7",resistance:"—"}],certs:{UL:"✓ (AWM 2587)",cUL:"✓ (CSA C22.2 No.210)",CE:"✓ (EN 50525-2-51)",MTW_TC:"✕",JIS:"✓ (PS-E)"}},
   {id:20,brand:"KURAMO",model:"FANC-PW110SBH",modelDisplay:"FANC-PW110SBH",type:"Cáp CC-Link tích hợp nguồn + tín hiệu",typeShort:"CC-Link Composite",voltage:"300V",temperature:"75°C",application:"Mạng CC-Link công nghiệp, kết nối thiết bị FA, tích hợp cả nguồn và tín hiệu",appShort:"CC-Link nguồn+tín hiệu",description:"Cáp phức hợp tích hợp 3 lõi tín hiệu 20AWG (PEF) + 2 lõi nguồn 0.75mm² (PVC). Chỉ 1 sợi cáp cho cả nguồn và dữ liệu. Tương thích CC-Link Ver.1.10. Đường kính ngoài ~12mm.",standard:"UL; cUL; CE; CCC; (PS)E; EAC",insulation:"PEF (tín hiệu) + PVC chịu nhiệt (nguồn)",jacket:"PVC kháng dầu và chịu nhiệt",conductorCount:"3C (20AWG tín hiệu) + 2C (0.75mm² nguồn)",drainWire:"Có (shield)",ratings:{heat:5,oil:6,noise:7,flame:5,torsion:0,flex:3,dragChain:"—"},rohs:"Có",standardLength:"100m",insulationResistance:"> 1000 MΩ·km@20°C",dielectricStrength:"AC 500V/1min",surfaceMark:"FANC-PW110SBH UL AWM 20276 30V VW-1",pdf:"fanc-PW110SBH.pdf",awgVariants:[{awg:"20+0.75mm²",structure:"3C(PEF)+2C(PVC)",insulDia:"2.36/2.3",totalDia:"12.0",weight:"—",current:"—",resistance:"—"}],certs:{UL:"✓ (AWM 20276)",cUL:"✓",CE:"✓",MTW_TC:"✕",JIS:"✓ (PS-E)"}},
@@ -1114,6 +1209,7 @@ document.addEventListener('keydown', function(e) {
     </div>
     <div class="knowledge-body" id="knowledgeBody"></div>
   </div>
+  
 </div>
 
 </body>
